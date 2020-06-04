@@ -1,4 +1,9 @@
-# tmsm-aquatonic-attendance
-Attendance in Aquatonic, real-time
+TMSM Aquatonic Attendance
+=================
 
-Testing
+Display Aquatonic Attendance in a badge
+
+Features
+-----------
+
+* Shortcode `[tmsm-aquatonic-attendance-badge]` to display attendance badge
