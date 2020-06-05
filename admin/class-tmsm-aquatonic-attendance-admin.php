@@ -254,11 +254,22 @@ class Tmsm_Aquatonic_Attendance_Admin {
 			$this->plugin_name,
 			$this->plugin_name . '-webservice',
 			array(
-				'description' 	=> 'URL of the Web Service for Count Method',
+				'description' 	=> __( 'URL of the Web Service for Count Method', 'tmsm-aquatonic-attendance' ),
 				'id' => 'webservicecounturl',
 			)
 		);
 
+		add_settings_field(
+			'pageid',
+			esc_html__( 'Attendance Page ID', 'tmsm-aquatonic-attendance' ),
+			array( $this, 'field_text' ),
+			$this->plugin_name,
+			$this->plugin_name . '-tiers',
+			array(
+				'description' 	=> __( 'Page ID of the attendance page', 'tmsm-aquatonic-attendance' ),
+				'id' => 'pageid',
+			)
+		);
 		// Befin 5 tiers
 		for ($tier = 1; $tier <= 5; $tier++) {
 			add_settings_field(
@@ -581,6 +592,7 @@ class Tmsm_Aquatonic_Attendance_Admin {
 		$options   = array();
 
 		$options[] = array( 'webservicecounturl', 'text', '' );
+		$options[] = array( 'pageid', 'text', '' );
 		for ($tier = 1; $tier <= 5; $tier++) {
 			$options[] = array( "tier${tier}_value", 'text', '' );
 			$options[] = array( "tier${tier}_color", 'text', '' );

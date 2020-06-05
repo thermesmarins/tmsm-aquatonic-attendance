@@ -115,6 +115,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 			'nonce'        => wp_create_nonce( 'tmsm-aquatonic-attendance-nonce-action' ),
 			'locale'   => $this->get_locale(),
 			'timer_period' => 60*5, //seconds
+			'page' => get_permalink($this->get_option('pageid')),
 			'i18n'     => [
 				'attendance'          => __( 'Live Attendance', 'tmsm-aquatonic-attendance' ),
 				//'fromprice'          => _x( 'From', 'price', 'tmsm-aquatonic-attendance' ),
@@ -195,7 +196,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 		<script type="text/html" id="tmpl-tmsm-aquatonic-attendance-badge">
 			aaa {{ data.count }} bbb
 
-			<div class="progress" data-percentage="{{ data.occupation_rounded }}">
+			<a class="progress" data-percentage="{{ data.occupation_rounded }}" href="{{ TmsmAquatonicAttendanceApp.page }}">
 				<span class="progress-left">
 					<span class="progress-bar progress-bar-color-{{ data.color }}"></span>
 				</span>
@@ -203,15 +204,18 @@ class Tmsm_Aquatonic_Attendance_Public {
 					<span class="progress-bar progress-bar-color-{{ data.color }}"></span>
 				</span>
 				<div class="progress-value">
-					<p class="progress-value-text">
+
+						<span class="progress-value-text">
 						{{ TmsmAquatonicAttendanceApp.i18n.attendance }}
-					</p>
-					<p class="progress-value-number">
-						<b>{{ data.occupation }}%</b>
-					</p>
+						</span>
+						<span class="progress-value-number">
+							<b>{{ data.occupation }}%</b>
+						</span>
+
+
 
 				</div>
-			</div>
+			</a>
 
 		</script>
 		<?php

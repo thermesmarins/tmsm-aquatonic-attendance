@@ -2,17 +2,20 @@
 //styling
 $borderWidth: 10px;
 $animationTime: 0.5s;
-$border-color-default: #eee;
+$border-color-default: white;
 $border-color-blue: #5bc0de;
 $border-color-orange: #f0ad4e;
 $border-color-red: #d9534f;
 $size: 100px;
+$progress-background: rgba(0, 0, 0, .5);
+$text-color: white;
 
 //Create how many steps
 $howManySteps: 10; //this needs to be even.
 //for fun try using 20 and changine in the HTML the data-percentage to 15 or 85
 
 .progress {
+  display: inherit;
   width: $size;
   height: $size;
   line-height: $size;
@@ -20,6 +23,8 @@ $howManySteps: 10; //this needs to be even.
   margin: 0 auto;
   box-shadow: none;
   position: relative;
+  border-radius: $size;
+  background: $progress-background;
   &:after {
     content: "";
     width: 100%;
@@ -84,6 +89,7 @@ $howManySteps: 10; //this needs to be even.
   }
   .progress-value {
     display: flex;
+    color: $text-color;
     flex-direction: column;
     border-radius: 50%;
 
@@ -94,8 +100,6 @@ $howManySteps: 10; //this needs to be even.
     height: 100%;
     //font-family: $work-sans;
     .progress-value-number {
-      font-size: 120%;
-
       font-size: 120%;
       line-height: normal;
       margin: 0;
