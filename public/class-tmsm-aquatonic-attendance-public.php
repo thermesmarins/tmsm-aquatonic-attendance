@@ -86,7 +86,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 */
 	public function enqueue_styles() {
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/tmsm-aquatonic-attendance-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/tmsm-aquatonic-attendance-public.css', array('theme'), $this->version, 'all' );
 
 		// Define inline css
 		$css 			= '';
@@ -114,7 +114,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
 			'nonce'        => wp_create_nonce( 'tmsm-aquatonic-attendance-nonce-action' ),
 			'locale'   => $this->get_locale(),
-			'timer_period' => 20, //seconds
+			'timer_period' => 60*5, //seconds
 			'i18n'     => [
 				//'fromprice'          => _x( 'From', 'price', 'tmsm-aquatonic-attendance' ),
 			],
@@ -190,7 +190,21 @@ class Tmsm_Aquatonic_Attendance_Public {
 
 		<script type="text/html" id="tmpl-tmsm-aquatonic-attendance-badge">
 			aaa {{ data.count }} bbb
-			</label>
+
+			<div class="progress" data-percentage="{{ data.occupation_rounded }}">
+				<span class="progress-left">
+					<span class="progress-bar"></span>
+				</span>
+				<span class="progress-right">
+					<span class="progress-bar"></span>
+				</span>
+				<div class="progress-value">
+					<div>
+						{{ data.occupation }}%
+					</div>
+				</div>
+			</div>
+
 		</script>
 		<?php
 	}
@@ -200,13 +214,17 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 * Get attendance data
 	 *
 	 * @return array
-	 * @throws Exception
 	 */
 	private function get_realtime_data(){
 
+		$count = get_option('tmsm-aquatonic-attendance-count');
+		$occupation = absint( 100 * $count / 60 );
+
 		$data = [
-			'count' => 12,
-			'capacity' => 30,
+			'count' => $count,
+			'capacity' => 60,
+			'occupation' => $occupation,
+			'occupation_rounded' => round( $occupation, - 1 ),
 			];
 
 		return $data;
@@ -274,7 +292,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 		}
 
 		// Save Count to Options
-		update_option('tmsm-aquatonic-attendance', $count);
+		update_option('tmsm-aquatonic-attendance-count', $count);
 
 	}
 
