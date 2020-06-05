@@ -116,6 +116,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 			'locale'   => $this->get_locale(),
 			'timer_period' => 60*5, //seconds
 			'i18n'     => [
+				'attendance'          => __( 'Live Attendance', 'tmsm-aquatonic-attendance' ),
 				//'fromprice'          => _x( 'From', 'price', 'tmsm-aquatonic-attendance' ),
 			],
 			'options'  => [
@@ -166,7 +167,10 @@ class Tmsm_Aquatonic_Attendance_Public {
 			'option' => '',
 		), $atts, 'tmsm-aquatonic-attendance-calendar' );
 
-		$output = '<div id="tmsm-aquatonic-attendance-badge">'.__( 'Loading', 'tmsm-aquatonic-attendance' ).'</div>';
+		$output = '
+		<div id="tmsm-aquatonic-attendance-badge-select"></div>
+		<div id="tmsm-aquatonic-attendance-badge-loading">'.__( 'Loading', 'tmsm-aquatonic-attendance' ).'</div>
+		';
 
 		/*
 		$theme = wp_get_theme();
@@ -199,9 +203,13 @@ class Tmsm_Aquatonic_Attendance_Public {
 					<span class="progress-bar progress-bar-color-{{ data.color }}"></span>
 				</span>
 				<div class="progress-value">
-					<div>
-						{{ data.occupation }}%
-					</div>
+					<p class="progress-value-text">
+						{{ TmsmAquatonicAttendanceApp.i18n.attendance }}
+					</p>
+					<p class="progress-value-number">
+						<b>{{ data.occupation }}%</b>
+					</p>
+
 				</div>
 			</div>
 

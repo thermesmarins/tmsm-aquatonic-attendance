@@ -1,7 +1,7 @@
 .progress {
-  width: 80px;
-  height: 80px;
-  line-height: 80px;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
   background: none;
   margin: 0 auto;
   box-shadow: none;
@@ -49,8 +49,8 @@
 }
 .progress .progress-left .progress-bar {
   left: 100%;
-  border-top-right-radius: 40px;
-  border-bottom-right-radius: 40px;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
   border-left: 0;
   -webkit-transform-origin: center left;
   transform-origin: center left;
@@ -60,24 +60,33 @@
 }
 .progress .progress-right .progress-bar {
   left: -100%;
-  border-top-left-radius: 40px;
-  border-bottom-left-radius: 40px;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
   border-right: 0;
   -webkit-transform-origin: center right;
   transform-origin: center right;
 }
 .progress .progress-value {
   display: flex;
+  flex-direction: column;
   border-radius: 50%;
-  font-size: 120%;
   text-align: center;
   line-height: 20px;
   align-items: center;
   justify-content: center;
   height: 100%;
 }
-.progress .progress-value div {
-  margin-top: 10px;
+.progress .progress-value .progress-value-number {
+  font-size: 120%;
+  font-size: 120%;
+  line-height: normal;
+  margin: 0;
+}
+.progress .progress-value .progress-value-text {
+  font-size: 12px;
+  line-height: 12px;
+  margin: 0;
+  padding: 0 25px;
 }
 
 /* This for loop creates the 	necessary css animation names

@@ -309,7 +309,7 @@ class Tmsm_Aquatonic_Attendance_Admin {
 				$this->plugin_name . '-tiers',
 				array(
 					'id' => "tier{$tier}_longdesc",
-					'description' => esc_html__( 'Html accepted. ', 'tmsm-aquatonic-attendance' ),
+					'description' => esc_html__( 'Html accepted.', 'tmsm-aquatonic-attendance' ),
 				)
 			);
 		}

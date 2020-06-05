@@ -108,8 +108,8 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
     selectedValue: null,
     selectedIsVariable: null,
     selectedHasChoicesVariable: null,
-    selectElement: '#tmsm-aquatonic-attendance-badge',
-    loadingElement: '#tmsm-aquos-spa-booking-badge-loading',
+    selectElement: '#tmsm-aquatonic-attendance-badge-select',
+    loadingElement: '#tmsm-aquatonic-attendance-badge-loading',
 
     initialize: function() {
       //this.hide();
