@@ -41,13 +41,6 @@ class Tmsm_Aquatonic_Attendance_Public {
 	private $version;
 
 	/**
-	 * Engine URL
-	 *
-	 * @since 		1.0.0
-	 */
-	const ENGINE_URL = 'https://www.secure-hotel-booking.com/';
-
-	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -113,24 +106,28 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquatonic-attendance-public.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquatonic-attendance-public.js', array( 'jquery', 'backbone', 'wp-util' ), $this->version, true );
 
 
 		// Params
 		$params = [
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
+			'nonce'        => wp_create_nonce( 'tmsm-aquos-spa-booking-nonce-action' ),
 			'locale'   => $this->get_locale(),
-			'security' => wp_create_nonce( 'security' ),
+			'timer_period' => 20, //seconds
 			'i18n'     => [
 				//'fromprice'          => _x( 'From', 'price', 'tmsm-aquatonic-attendance' ),
 			],
 			'options'  => [
 				//'currency' => $this->get_option( 'currency' ),
 			],
-			'data'     => $this->get_attendance_data(),
+			'data'     => [
+				'products' => [],
+				'realtime' => $this->get_realtime_data(),
+			],
 		];
 
-		wp_localize_script( $this->plugin_name, 'tmsm_aquatonic_attendance_params', $params);
+		wp_localize_script( $this->plugin_name, 'TmsmAquatonicAttendanceApp', $params);
 	}
 
 	/**
@@ -169,7 +166,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 			'option' => '',
 		), $atts, 'tmsm-aquatonic-attendance-calendar' );
 
-		$output = 'Testing';
+		$output = '<div id="tmsm-aquatonic-attendance-badge">'.__( 'Loading', 'tmsm-aquatonic-attendance' ).'</div>';
 
 		/*
 		$theme = wp_get_theme();
@@ -181,11 +178,22 @@ class Tmsm_Aquatonic_Attendance_Public {
 			$buttonclass = 'button';
 		}
 		*/
-		$output = '<div id="tmsm-aquatonic-attendance-container">'.$output.'</div>';
+		$output = '<div id="tmsm-aquatonic-attendance-badge-container">'.$output.'</div>';
 		return $output;
 	}
 
+	/**
+	 * Have Voucher Template
+	 */
+	public function badge_template(){
+		?>
 
+		<script type="text/html" id="tmpl-tmsm-aquatonic-attendance-badge">
+			aaa {{ data.count }} bbb
+			</label>
+		</script>
+		<?php
+	}
 
 
 	/**
@@ -194,9 +202,12 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 * @return array
 	 * @throws Exception
 	 */
-	private function get_attendance_data(){
+	private function get_realtime_data(){
 
-		$data = [];
+		$data = [
+			'count' => 10,
+			'capacity' => 30,
+			];
 
 		return $data;
 	}
@@ -209,11 +220,62 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 * @throws Exception
 	 */
 	public function refresh_attendance_data(){
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( 'refresh_attendance_data' );
+		}
+		$count = null;
+		$errors = [];
 
-		error_log('refresh_attendance_data');
-		$data = [];
+		// Call web service
+		$settings_webserviceurl = $this->get_option( 'webservicecounturl' );
+		if ( ! empty( $settings_webserviceurl ) ) {
 
-		return $data;
+			// Connect with cURL
+			$ch = curl_init();
+			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, true );
+			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+			curl_setopt( $ch, CURLOPT_URL, $settings_webserviceurl );
+			$result = curl_exec( $ch );
+			curl_close( $ch );
+			$result_array = [];
+
+			if(empty($result)){
+				$errors[] = __( 'Web service is not available', 'tmsm-aquatonic-attendance' );
+			}
+			else{
+				$result_array = json_decode( $result, true );
+
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( var_export( $result_array, true ) );
+				}
+
+				if(!empty($result_array['Status']) && $result_array['Status'] == 'true'){
+
+					$count = sanitize_text_field($result_array['Value']);
+					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+						error_log( 'count: '.$count );
+					}
+
+					if ( $count === null ) {
+						$errors[] = __( 'No data available', 'tmsm-aquatonic-attendance' );
+					}
+				}
+				else{
+					if(!empty($result_array['ErrorCode']) && !empty($result_array['ErrorMessage'])){
+						$errors[] = sprintf(__( 'Error code %s: %s', 'tmsm-aquatonic-attendance' ), $result_array['ErrorCode'], $result_array['ErrorMessage']);
+					}
+				}
+			}
+		}
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && ! empty( $errors ) ) {
+			error_log('$errors:');
+			error_log(print_r($errors, true));
+		}
+
+		// Save Count to Options
+		update_option('tmsm-aquatonic-attendance', $count);
+
 	}
 
 
