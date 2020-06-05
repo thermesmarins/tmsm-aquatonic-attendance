@@ -6,4 +6,4 @@ Display Aquatonic Attendance in a badge
 Features
 -----------
 
-* Shortcode `[tmsm-aquatonic-attendance-badge]` to display attendance badge
+* Shortcode `[tmsm-aquatonic-attendance-badge]` to display realtime attendance badge
