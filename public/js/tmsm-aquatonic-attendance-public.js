@@ -280,8 +280,11 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
 
   };
 
+  // Init App
   $( document ).ready( function() {
-    TmsmAquatonicAttendanceApp.init();
+    if($('#tmsm-aquatonic-attendance-badge-container').length > 0){
+      TmsmAquatonicAttendanceApp.init();
+    }
   } );
 
 })(jQuery, TmsmAquatonicAttendanceApp);

@@ -112,6 +112,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquatonic-attendance-public.js', array( 'jquery', 'backbone', 'wp-util' ), $this->version, true );
 
 
+
 		// Params
 		$params = [
 			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
@@ -121,10 +122,6 @@ class Tmsm_Aquatonic_Attendance_Public {
 			'page' => get_permalink($this->get_option('pageid')),
 			'i18n'     => [
 				'attendance'          => __( 'Live Attendance', 'tmsm-aquatonic-attendance' ),
-				//'fromprice'          => _x( 'From', 'price', 'tmsm-aquatonic-attendance' ),
-			],
-			'options'  => [
-				//'currency' => $this->get_option( 'currency' ),
 			],
 			'data'     => [
 				'products' => [],
@@ -144,6 +141,55 @@ class Tmsm_Aquatonic_Attendance_Public {
 		add_shortcode( 'tmsm-aquatonic-attendance-badge', array( $this, 'badge_shortcode') );
 	}
 
+
+	/**
+	 * Get the current timeslot capacity (if 0, it is closed)
+	 *
+	 * @since    1.0.0
+	 * @return int
+	 */
+	private function get_timeslot_capacity(){
+
+		$timeslots = $this->get_option('timeslots');
+		$timeslots_items = preg_split('/\r\n|\r|\n/', esc_attr($timeslots));
+		$open = false;
+		$capacity = 0;
+
+		foreach($timeslots_items as &$timeslots_item){
+
+			$tmp_timeslots_item = $timeslots_item;
+			$tmp_timeslots_item_array = explode('=', $tmp_timeslots_item);
+
+			$timeslots_item = [
+				'daynumber' => trim($tmp_timeslots_item_array[0]),
+				'times' => trim($tmp_timeslots_item_array[1]),
+				'capacity' => trim($tmp_timeslots_item_array[2]),
+			];
+
+		}
+		foreach($timeslots_items as $timeslots_item){
+			if($timeslots_item['daynumber'] === date('w')){
+
+				$times = explode(',', $timeslots_item['times']);
+				foreach($times as $time){
+
+					$hoursminutes = explode('-', $time);
+					$before = trim($hoursminutes[0]);
+					$after = trim($hoursminutes[1]);
+					$current_time = current_time('H:i');
+					//$current_time = '16:00';
+
+					if(strtotime($before) < strtotime($current_time) && strtotime($current_time) < strtotime($after) ){
+						$open = true;
+						$capacity = $timeslots_item['capacity'];
+					}
+				}
+
+			}
+		}
+
+		return $capacity;
+	}
 
 	/**
 	 * Send an email to admin if the scheduled cron is not defined
@@ -198,6 +244,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 
 		<script type="text/html" id="tmpl-tmsm-aquatonic-attendance-badge">
 
+			<# if ( data.capacity > 0) { #>
 			<a class="progress" data-count="{{ data.count }}"  data-occupation="{{ data.occupation }}" data-percentage="{{ data.occupation_rounded }}" href="{{ TmsmAquatonicAttendanceApp.page }}">
 				<span class="progress-left">
 					<span class="progress-bar progress-bar-color-{{ data.color }}"></span>
@@ -210,7 +257,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 						<span class="progress-value-text">
 						{{ TmsmAquatonicAttendanceApp.i18n.attendance }}
 						</span>
-						<span class="progress-value-number">
+					<span class="progress-value-number">
 							<b>{{ data.occupation }}%</b>
 						</span>
 
@@ -218,6 +265,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 
 				</div>
 			</a>
+			<# } #>
 
 		</script>
 		<?php
@@ -231,8 +279,8 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 */
 	private function get_realtime_data(){
 
-		$count = get_option('tmsm-aquatonic-attendance-count');
-		$capacity = 60;
+		$count = intval(get_option('tmsm-aquatonic-attendance-count'));
+		$capacity = $this->get_timeslot_capacity();
 		$occupation = absint( 100 * $count / $capacity );
 
 		$options = $this->get_option();

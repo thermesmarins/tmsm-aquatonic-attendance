@@ -326,6 +326,18 @@ class Tmsm_Aquatonic_Attendance_Admin {
 		}
 		// End 5 tiers
 
+		add_settings_field(
+			'timeslots',
+			esc_html( __( 'Timeslots', 'tmsm-aquatonic-attendance' )),
+			array( $this, 'field_textarea' ),
+			$this->plugin_name,
+			$this->plugin_name . '-timeslots',
+			array(
+				'id' => 'timeslots',
+				'description' => esc_html__( 'Format: Day Number=09:00-14:00,15:30-17:30 serapated by a line break. Day Number is: 0 for Sunday, 1 for Monday, etc.', 'tmsm-aquatonic-attendance' ),
+			)
+		);
+
 
 
 	}
@@ -593,6 +605,7 @@ class Tmsm_Aquatonic_Attendance_Admin {
 
 		$options[] = array( 'webservicecounturl', 'text', '' );
 		$options[] = array( 'pageid', 'text', '' );
+		$options[] = array( 'timeslots', 'textarea', '' );
 		for ($tier = 1; $tier <= 5; $tier++) {
 			$options[] = array( "tier${tier}_value", 'text', '' );
 			$options[] = array( "tier${tier}_color", 'text', '' );
