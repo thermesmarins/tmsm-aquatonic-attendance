@@ -30,9 +30,6 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
         options.data.action = this.action;
       }
 
-      console.log('sync action: '+options.data.action);
-      console.log('sync options: ');
-      console.log(options);
 
 
       return Backbone.sync( method, object, options );
@@ -91,8 +88,11 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
   TmsmAquatonicAttendanceApp.BadgeModel = BaseModel.extend( {
     action: 'tmsm-aquatonic-attendance-realtime',
     defaults: {
-      count: null,
-      capacity: null,
+      count: 0,
+      color: null,
+      capacity: 0,
+      occupation: 0,
+      occupation_rounded: 0,
     }
   } );
 
@@ -112,9 +112,6 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
     loadingElement: '#tmsm-aquatonic-attendance-badge-loading',
 
     initialize: function() {
-      //this.hide();
-      console.log('BadgesListView initialize');
-      //$( this.selectElement ).empty().val('');
       this.listenTo( this.collection, 'sync', this.render );
     },
 
@@ -122,12 +119,10 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
       'change select' : 'change'
     },
     loading: function(){
-      console.log('BadgesListView loading');
       $( this.loadingElement ).show();
       $( this.selectElement ).hide();
     },
     loaded: function(){
-      console.log('BadgesListView loaded');
       $( this.loadingElement ).hide();
       $( this.selectElement ).show();
     },
@@ -137,87 +132,16 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
 
       //$list.hide();
 
-      console.log('BadgesListView collection:');
-      console.log(this.collection);
-
       //$list.append( '<option>'+TmsmAquatonicAttendanceApp.strings.no_selection+'</option>' );
       this.collection.each( function( model ) {
-        console.log(model);
         var item = new TmsmAquatonicAttendanceApp.BadgesListItemView( { model: model } );
         $list.append( item.render().$el );
       }, this );
-      if (typeof $list.selectpicker === 'function') {
-        $list.selectpicker('refresh');
-      }
+
+
       this.loaded();
 
       return this;
-    },
-
-    change: function(event){
-      console.log('BadgeListView change');
-      this.selectedValue = $(event.target).val();
-      TmsmAquatonicAttendanceApp.productAttributesList.reset();
-      TmsmAquatonicAttendanceApp.productAttributesList.loading();
-
-      console.log('selectedValue: '+this.selectedValue);
-
-      this.selectedIsVariable = $(event.target).children("option:selected").attr('data-variable');
-      console.log('selectedIsVariable: '+this.selectedIsVariable);
-
-      var choices = JSON.parse($(event.target).children("option:selected").attr('data-choices'));
-      this.selectedHasChoices = (choices.length !== 0);
-      console.warn('selectedChoices: ');
-      console.log(choices);
-      console.log(choices.length);
-      console.log('selectedHasChoices: '+this.selectedHasChoices);
-
-      TmsmAquatonicAttendanceApp.selectedData.set('product', this.selectedValue);
-      TmsmAquatonicAttendanceApp.dateList.reset();
-      TmsmAquatonicAttendanceApp.timesList.reset();
-      TmsmAquatonicAttendanceApp.choicesList.reset();
-      TmsmAquatonicAttendanceApp.productAttributesList.reset();
-      TmsmAquatonicAttendanceApp.productVariationsList.reset();
-
-      if(this.selectedHasChoices){
-        // Go to choices
-        TmsmAquatonicAttendanceApp.data.choices = choices;
-        TmsmAquatonicAttendanceApp.choices.reset( TmsmAquatonicAttendanceApp.data.choices );
-        TmsmAquatonicAttendanceApp.choicesList.render();
-
-        TmsmAquatonicAttendanceApp.animateTransition(TmsmAquatonicAttendanceApp.choicesList.element());
-      }
-      else{
-        if(this.selectedIsVariable){
-          // Go to variations
-          TmsmAquatonicAttendanceApp.productvariations.fetch({ data: {
-              product: this.selectedValue,
-            } });
-          TmsmAquatonicAttendanceApp.productattributes.fetch({ data: {
-              product: this.selectedValue,
-            } });
-
-          TmsmAquatonicAttendanceApp.productVariationsList.matchattributes();
-          //TmsmAquatonicAttendanceApp.productAttributesList.render();
-
-          TmsmAquatonicAttendanceApp.animateTransition(TmsmAquatonicAttendanceApp.productAttributesList.element());
-        }
-        else{
-          // Set product data
-          TmsmAquatonicAttendanceApp.selectedData.set('product', this.selectedValue);
-          TmsmAquatonicAttendanceApp.selectedData.set('productvariation', this.selectedValue);
-          TmsmAquatonicAttendanceApp.animateTransition(TmsmAquatonicAttendanceApp.dateList.element());
-        }
-      }
-
-
-    },
-
-    reset: function (){
-      this.$( this.selectElement ).empty().val('');
-      this.selectedValue = null;
-      TmsmAquatonicAttendanceApp.selectedData.set('product', null);
-      this.hide();
     },
 
     element: function (){
@@ -254,7 +178,6 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
    * Retrieves new data from server.
    */
   TmsmAquatonicAttendanceApp.refreshData = function() {
-    console.log('refreshData');
     TmsmAquatonicAttendanceApp.badge.fetch();
   };
 

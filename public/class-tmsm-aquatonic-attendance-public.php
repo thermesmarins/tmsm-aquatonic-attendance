@@ -124,7 +124,6 @@ class Tmsm_Aquatonic_Attendance_Public {
 				'attendance'          => __( 'Live Attendance', 'tmsm-aquatonic-attendance' ),
 			],
 			'data'     => [
-				'products' => [],
 				'realtime' => $this->get_realtime_data(),
 			],
 		];
