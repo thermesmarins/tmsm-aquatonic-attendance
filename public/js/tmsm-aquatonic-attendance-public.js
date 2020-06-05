@@ -234,12 +234,6 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
 
   TmsmAquatonicAttendanceApp.BadgesListItemView = Backbone.View.extend( {
     tagName: 'div',
-    attributes: function() {
-      return {
-        value: this.model.get('count'),
-        'data-capacity': this.model.get('capacity'),
-      };
-    },
     className: 'tmsm-aquatonic-attendance-badge',
     template: wp.template( 'tmsm-aquatonic-attendance-badge' ),
 

@@ -69,14 +69,17 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 *
 	 * @return null
 	 */
-	private function get_option($option_name){
+	private function get_option($option_name = null){
 
 		$options = get_option($this->plugin_name . '-options');
 
-		if(empty($options[$option_name])){
-			return null;
+		if(!empty($option_name)){
+			return $options[$option_name] ?? null;
 		}
-		return $options[$option_name];
+		else{
+			return $options;
+		}
+
 	}
 
 	/**
@@ -194,9 +197,8 @@ class Tmsm_Aquatonic_Attendance_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquatonic-attendance-badge">
-			aaa {{ data.count }} bbb
 
-			<a class="progress" data-percentage="{{ data.occupation_rounded }}" href="{{ TmsmAquatonicAttendanceApp.page }}">
+			<a class="progress" data-count="{{ data.count }}"  data-occupation="{{ data.occupation }}" data-percentage="{{ data.occupation_rounded }}" href="{{ TmsmAquatonicAttendanceApp.page }}">
 				<span class="progress-left">
 					<span class="progress-bar progress-bar-color-{{ data.color }}"></span>
 				</span>
@@ -230,19 +232,31 @@ class Tmsm_Aquatonic_Attendance_Public {
 	private function get_realtime_data(){
 
 		$count = get_option('tmsm-aquatonic-attendance-count');
-		$occupation = absint( 100 * $count / 60 );
+		$capacity = 60;
+		$occupation = absint( 100 * $count / $capacity );
+
+		$options = $this->get_option();
+		$occupation_tier = 1;
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log('occupation: '.$occupation);
+		}
+		for ($tier = 1; $tier <= 5; $tier++) {
+			if(!empty($options["tier${tier}_value"]) && $occupation > $options["tier${tier}_value"]){
+				$occupation_tier = ($tier+1);
+			}
+		}
 
 		$color = 'blue';
-		if($occupation > 65){
-			$color = 'orange';
-		}
-		if($occupation > 85){
-			$color = 'red';
+
+		if(!empty($occupation_tier)){
+			$color = $options["tier${occupation_tier}_color"];
+
 		}
 
 		$data = [
 			'count' => $count,
-			'capacity' => 60,
+			'capacity' => $capacity,
 			'color' => $color,
 			'occupation' => $occupation,
 			'occupation_rounded' => round( $occupation, - 1 ),
