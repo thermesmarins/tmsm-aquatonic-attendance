@@ -3,7 +3,9 @@
 $borderWidth: 10px;
 $animationTime: 0.5s;
 $border-color-default: #eee;
-$border-color-fill: #ff0000;
+$border-color-blue: #5bc0de;
+$border-color-orange: #f0ad4e;
+$border-color-red: #d9534f;
 $size: 80px;
 
 //Create how many steps
@@ -47,7 +49,17 @@ $howManySteps: 10; //this needs to be even.
     border-style: solid;
     position: absolute;
     top: 0;
-    border-color: $border-color-fill;
+    border-color: $border-color-default;
+    &.progress-bar-color-blue{
+      border-color: $border-color-blue;
+    }
+    &.progress-bar-color-orange{
+      border-color: $border-color-orange;
+    }
+    &.progress-bar-color-red{
+      border-color: $border-color-red;
+    }
+
   }
   .progress-left .progress-bar {
     left: 100%;

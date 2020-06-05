@@ -193,10 +193,10 @@ class Tmsm_Aquatonic_Attendance_Public {
 
 			<div class="progress" data-percentage="{{ data.occupation_rounded }}">
 				<span class="progress-left">
-					<span class="progress-bar"></span>
+					<span class="progress-bar progress-bar-color-{{ data.color }}"></span>
 				</span>
 				<span class="progress-right">
-					<span class="progress-bar"></span>
+					<span class="progress-bar progress-bar-color-{{ data.color }}"></span>
 				</span>
 				<div class="progress-value">
 					<div>
@@ -220,9 +220,18 @@ class Tmsm_Aquatonic_Attendance_Public {
 		$count = get_option('tmsm-aquatonic-attendance-count');
 		$occupation = absint( 100 * $count / 60 );
 
+		$color = 'blue';
+		if($occupation > 65){
+			$color = 'orange';
+		}
+		if($occupation > 85){
+			$color = 'red';
+		}
+
 		$data = [
 			'count' => $count,
 			'capacity' => 60,
+			'color' => $color,
 			'occupation' => $occupation,
 			'occupation_rounded' => round( $occupation, - 1 ),
 			];

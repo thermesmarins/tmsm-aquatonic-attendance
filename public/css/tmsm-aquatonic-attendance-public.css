@@ -36,7 +36,16 @@
   border-style: solid;
   position: absolute;
   top: 0;
-  border-color: #ff0000;
+  border-color: #eee;
+}
+.progress .progress-bar.progress-bar-color-blue {
+  border-color: #5bc0de;
+}
+.progress .progress-bar.progress-bar-color-orange {
+  border-color: #f0ad4e;
+}
+.progress .progress-bar.progress-bar-color-red {
+  border-color: #d9534f;
 }
 .progress .progress-left .progress-bar {
   left: 100%;
