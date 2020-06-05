@@ -216,6 +216,9 @@ class Tmsm_Aquatonic_Attendance {
 		$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
 		$this->loader->add_action( 'wp_update_plugins', $plugin_public, 'check_cron_schedule_exists' );
 
+		$this->loader->add_action( 'wp_ajax_tmsm-aquatonic-attendance-realtime', $plugin_public, 'ajax_realtime' );
+		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquatonic-attendance-realtime', $plugin_public, 'ajax_realtime' );
+
 		// Ajax
 		//$this->loader->add_action( 'wp_ajax_tmsm-aquatonic-attendance-calculatetotal', $plugin_public, 'ajax_calculate_totalprice' );
 		//$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquatonic-attendance-calculatetotal', $plugin_public, 'ajax_calculate_totalprice' );

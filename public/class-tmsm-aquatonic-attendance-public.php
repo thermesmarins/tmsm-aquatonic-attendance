@@ -112,7 +112,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 		// Params
 		$params = [
 			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
-			'nonce'        => wp_create_nonce( 'tmsm-aquos-spa-booking-nonce-action' ),
+			'nonce'        => wp_create_nonce( 'tmsm-aquatonic-attendance-nonce-action' ),
 			'locale'   => $this->get_locale(),
 			'timer_period' => 20, //seconds
 			'i18n'     => [
@@ -205,7 +205,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 	private function get_realtime_data(){
 
 		$data = [
-			'count' => 10,
+			'count' => 12,
 			'capacity' => 30,
 			];
 
@@ -278,5 +278,71 @@ class Tmsm_Aquatonic_Attendance_Public {
 
 	}
 
+	/**
+	 * Send a response to ajax request, as JSON.
+	 *
+	 * @param mixed $response
+	 */
+	private function ajax_return( $response = true ) {
+		echo json_encode( $response );
+		exit;
+	}
+
+	/**
+	 * Ajax check nonce security
+	 */
+	private function ajax_checksecurity(){
+		error_log('ajax_checksecurity');
+
+		error_log(print_r($_REQUEST, true));
+		$security = sanitize_text_field( $_REQUEST['nonce'] );
+
+		error_log('security: '.$security);
+		$errors = array(); // Array to hold validation errors
+		$jsondata   = array(); // Array to pass back data
+
+		// Check security
+		if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquatonic-attendance-nonce-action' ) ) {
+			$errors[] = __('Token security is not valid', 'tmsm-aquatonic-attendance');
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log('Token security is not valid');
+			}
+		}
+		else {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'Token security is valid' );
+			}
+		}
+		if(check_ajax_referer( 'tmsm-aquatonic-attendance-nonce-action', 'nonce' ) === false){
+			$errors[] = __('Ajax referer is not valid', 'tmsm-aquatonic-attendance');
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log('Ajax referer is not valid');
+			}
+		}
+		else{
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'Ajax referer is valid' );
+			}
+		}
+
+		if(!empty($errors)){
+			wp_send_json($jsondata);
+			wp_die();
+		}
+
+	}
+
+	/**
+	 * Ajax For Products
+	 *
+	 * @since    1.0.0
+	 */
+	public function ajax_realtime() {
+
+		$this->ajax_checksecurity();
+		$this->ajax_return( $this->get_realtime_data() );
+
+
+	}
 
 }
