@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquatonic Attendance\n"
-"POT-Creation-Date: 2020-06-05 14:34+0200\n"
-"PO-Revision-Date: 2020-06-05 14:36+0200\n"
+"POT-Creation-Date: 2020-06-05 15:12+0200\n"
+"PO-Revision-Date: 2020-06-05 15:12+0200\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language: fr\n"
@@ -152,34 +152,34 @@ msgstr "Toutes les 15 minutes"
 msgid "Live Attendance"
 msgstr "Affluence en direct"
 
+#: public/class-tmsm-aquatonic-attendance-public.php:202
 #: public/class-tmsm-aquatonic-attendance-public.php:203
-#: public/class-tmsm-aquatonic-attendance-public.php:204
 #, php-format
 msgid "TMSM Aquatonic Attendance cron is not scheduled on %s"
 msgstr "Le cron de TMSM Aquatonic Attendance n’est pas planifié sur %s"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:222
+#: public/class-tmsm-aquatonic-attendance-public.php:221
 msgid "Loading"
 msgstr "Chargement"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:344
+#: public/class-tmsm-aquatonic-attendance-public.php:345
 msgid "Web service is not available"
 msgstr "Le service web n’est pas disponible"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:361
+#: public/class-tmsm-aquatonic-attendance-public.php:362
 msgid "No data available"
 msgstr "Aucune donnée disponible"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:366
+#: public/class-tmsm-aquatonic-attendance-public.php:367
 #, php-format
 msgid "Error code %s: %s"
 msgstr "Code erreur %s : %s"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:407
+#: public/class-tmsm-aquatonic-attendance-public.php:406
 msgid "Token security is not valid"
 msgstr "Le jeton de sécurité n’est pas valide"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:418
+#: public/class-tmsm-aquatonic-attendance-public.php:417
 msgid "Ajax referer is not valid"
 msgstr "Le référant ajax n’est pas valide"
 
