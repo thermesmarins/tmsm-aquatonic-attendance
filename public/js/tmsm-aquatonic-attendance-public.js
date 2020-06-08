@@ -178,6 +178,7 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
    * Retrieves new data from server.
    */
   TmsmAquatonicAttendanceApp.refreshData = function() {
+    console.log('TmsmAquatonicAttendanceApp refreshData');
     TmsmAquatonicAttendanceApp.badge.fetch();
   };
 
@@ -200,6 +201,7 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
 
     // Start a timer for updating the data.
     TmsmAquatonicAttendanceApp.runTimer();
+    TmsmAquatonicAttendanceApp.refreshData();
 
     // Tooltip
     $(function () {

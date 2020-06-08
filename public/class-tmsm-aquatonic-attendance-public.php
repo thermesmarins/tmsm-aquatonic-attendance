@@ -125,7 +125,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 				'moreinfo'          => __( 'More Info About Attendance', 'tmsm-aquatonic-attendance' ),
 			],
 			'data'     => [
-				'realtime' => $this->get_realtime_data(),
+				'realtime' => [],
 			],
 		];
 

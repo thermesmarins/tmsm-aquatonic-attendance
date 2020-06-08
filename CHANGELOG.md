@@ -1,3 +1,5 @@
+* Fix refresh system, now realtime data cannot be cached
+
 ### 1.0.2: June 08th, 2020
 * Fix tooltip size when in absolute position
 
