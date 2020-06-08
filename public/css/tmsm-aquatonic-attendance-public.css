@@ -10,6 +10,9 @@
   border-radius: 100px;
   background: rgba(0, 0, 0, 0.5);
 }
+.progress:hover {
+  text-decoration: none;
+}
 .progress:after {
   content: "";
   width: 100%;

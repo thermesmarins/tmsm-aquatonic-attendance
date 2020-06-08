@@ -26,6 +26,9 @@ $howManySteps: 10; //this needs to be even.
   position: relative;
   border-radius: $size;
   background: $progress-background;
+  &:hover{
+    text-decoration: none;
+  }
   &:after {
     content: "";
     width: 100%;

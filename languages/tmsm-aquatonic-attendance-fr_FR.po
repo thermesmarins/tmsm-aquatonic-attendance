@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquatonic Attendance\n"
-"POT-Creation-Date: 2020-06-05 15:12+0200\n"
-"PO-Revision-Date: 2020-06-05 15:12+0200\n"
+"POT-Creation-Date: 2020-06-08 10:30+0200\n"
+"PO-Revision-Date: 2020-06-08 10:31+0200\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language: fr\n"
@@ -152,34 +152,38 @@ msgstr "Toutes les 15 minutes"
 msgid "Live Attendance"
 msgstr "Affluence en direct"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:202
+#: public/class-tmsm-aquatonic-attendance-public.php:125
+msgid "More Info About Attendance"
+msgstr "En savoir plus"
+
 #: public/class-tmsm-aquatonic-attendance-public.php:203
+#: public/class-tmsm-aquatonic-attendance-public.php:204
 #, php-format
 msgid "TMSM Aquatonic Attendance cron is not scheduled on %s"
 msgstr "Le cron de TMSM Aquatonic Attendance n’est pas planifié sur %s"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:221
+#: public/class-tmsm-aquatonic-attendance-public.php:222
 msgid "Loading"
 msgstr "Chargement"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:345
+#: public/class-tmsm-aquatonic-attendance-public.php:346
 msgid "Web service is not available"
 msgstr "Le service web n’est pas disponible"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:362
+#: public/class-tmsm-aquatonic-attendance-public.php:363
 msgid "No data available"
 msgstr "Aucune donnée disponible"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:367
+#: public/class-tmsm-aquatonic-attendance-public.php:368
 #, php-format
 msgid "Error code %s: %s"
 msgstr "Code erreur %s : %s"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:406
+#: public/class-tmsm-aquatonic-attendance-public.php:407
 msgid "Token security is not valid"
 msgstr "Le jeton de sécurité n’est pas valide"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:417
+#: public/class-tmsm-aquatonic-attendance-public.php:418
 msgid "Ajax referer is not valid"
 msgstr "Le référant ajax n’est pas valide"
 

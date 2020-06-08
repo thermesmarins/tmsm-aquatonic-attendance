@@ -201,13 +201,19 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
     // Start a timer for updating the data.
     TmsmAquatonicAttendanceApp.runTimer();
 
+    // Tooltip
+    $(function () {
+      $('#tmsm-aquatonic-attendance-badge-container .progress').tooltip();
+    })
   };
 
   // Init App
   $( document ).ready( function() {
+    // Check if page has a container
     if($('#tmsm-aquatonic-attendance-badge-container').length > 0){
       TmsmAquatonicAttendanceApp.init();
     }
+
   } );
 
 })(jQuery, TmsmAquatonicAttendanceApp);

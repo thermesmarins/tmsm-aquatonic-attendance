@@ -122,6 +122,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 			'page' => get_permalink($this->get_option('pageid')),
 			'i18n'     => [
 				'attendance'          => __( 'Live Attendance', 'tmsm-aquatonic-attendance' ),
+				'moreinfo'          => __( 'More Info About Attendance', 'tmsm-aquatonic-attendance' ),
 			],
 			'data'     => [
 				'realtime' => $this->get_realtime_data(),
@@ -244,7 +245,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 		<script type="text/html" id="tmpl-tmsm-aquatonic-attendance-badge">
 
 			<# if ( data.capacity > 0) { #>
-			<a class="progress" data-count="{{ data.count }}"  data-occupation="{{ data.occupation }}" data-percentage="{{ data.occupation_rounded }}" href="{{ TmsmAquatonicAttendanceApp.page }}">
+			<a class="progress" data-count="{{ data.count }}" data-toggle="tooltip" data-placement="auto right" title="{{ TmsmAquatonicAttendanceApp.i18n.moreinfo }}" data-occupation="{{ data.occupation }}" data-percentage="{{ data.occupation_rounded }}" href="{{ TmsmAquatonicAttendanceApp.page }}">
 				<span class="progress-left">
 					<span class="progress-bar progress-bar-color-{{ data.color }}"></span>
 				</span>
