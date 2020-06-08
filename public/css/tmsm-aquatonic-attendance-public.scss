@@ -26,6 +26,7 @@ $howManySteps: 10; //this needs to be even.
   position: relative;
   border-radius: $size;
   background: $progress-background;
+  margin-bottom: 1em;
   &:hover{
     text-decoration: none;
   }
@@ -162,7 +163,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
     }
   }
 }
-//additional styling
-.progress {
-  margin-bottom: 1em;
+
+#tmsm-aquatonic-attendance-badge-container .tooltip{
+  min-width: 130px;
 }

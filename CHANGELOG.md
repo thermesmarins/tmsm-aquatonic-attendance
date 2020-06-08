@@ -1,3 +1,5 @@
+* Fix tooltip size when in absolute position
+
 ### 1.0.1: June 08th, 2020
 * Added tooltip on badge
 * Removed underline on hover of badge
