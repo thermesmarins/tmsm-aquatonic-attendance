@@ -1,3 +1,4 @@
+### 1.0.2: June 08th, 2020
 * Fix tooltip size when in absolute position
 
 ### 1.0.1: June 08th, 2020
