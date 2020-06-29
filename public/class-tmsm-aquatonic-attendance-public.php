@@ -160,7 +160,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 			$tmp_timeslots_item = $timeslots_item;
 			$tmp_timeslots_item_array = explode('=', $tmp_timeslots_item);
 
-			if(is_array($tmp_timeslots_item_array)){
+			if ( is_array( $tmp_timeslots_item_array ) && count($tmp_timeslots_item_array) === 3 ) {
 				$timeslots_item = [
 					'daynumber' => trim($tmp_timeslots_item_array[0]),
 					'times' => trim($tmp_timeslots_item_array[1]),

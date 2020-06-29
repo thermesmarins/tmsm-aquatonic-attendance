@@ -1,3 +1,6 @@
+### 1.0.5: June 29th, 2020
+* Fix notice error
+
 ### 1.0.4: June 29th, 2020
 * Fix the timeslots parsing was ignoring the last item
 
