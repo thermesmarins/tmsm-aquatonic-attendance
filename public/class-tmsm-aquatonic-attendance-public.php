@@ -150,7 +150,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 */
 	private function get_timeslot_capacity(){
 
-		$timeslots = $this->get_option('timeslots');
+		$timeslots = $this->get_option('timeslots').PHP_EOL;
 		$timeslots_items = preg_split('/\r\n|\r|\n/', esc_attr($timeslots));
 		$open = false;
 		$capacity = 0;
@@ -160,40 +160,39 @@ class Tmsm_Aquatonic_Attendance_Public {
 			$tmp_timeslots_item = $timeslots_item;
 			$tmp_timeslots_item_array = explode('=', $tmp_timeslots_item);
 
-			$timeslots_item = [
-				'daynumber' => trim($tmp_timeslots_item_array[0]),
-				'times' => trim($tmp_timeslots_item_array[1]),
-				'capacity' => trim($tmp_timeslots_item_array[2]),
-			];
+			if(is_array($tmp_timeslots_item_array)){
+				$timeslots_item = [
+					'daynumber' => trim($tmp_timeslots_item_array[0]),
+					'times' => trim($tmp_timeslots_item_array[1]),
+					'capacity' => trim($tmp_timeslots_item_array[2]),
+				];
 
+			}
 		}
-
-		error_log(print_r($timeslots_items, true));
+		$timeslots_item = null;
 
 		$current_day = date('w');
-		//$current_day = 6;
+		$current_day = 6;
 
-		foreach($timeslots_items as $timeslots_item){
-			if($timeslots_item['daynumber'] === date('w')){
+		foreach($timeslots_items as $timeslots_key => $timeslots_item_to_parse){
 
-				$times = explode(',', $timeslots_item['times']);
+			if ( isset( $timeslots_item_to_parse['daynumber'] ) && $timeslots_item_to_parse['daynumber'] == $current_day ) {
+				$times = explode(',', $timeslots_item_to_parse['times']);
 				foreach($times as $time){
-
 					$hoursminutes = explode('-', $time);
 					$before = trim($hoursminutes[0]);
 					$after = trim($hoursminutes[1]);
 					$current_time = current_time('H:i');
-					//$current_time = '13:00';
+					$current_time = '13:00';
 
-					if(strtotime($before) < strtotime($current_time) && strtotime($current_time) < strtotime($after) ){
+					if(strtotime($before) <= strtotime($current_time) && strtotime($current_time) <= strtotime($after) ){
 						$open = true;
-						$capacity = $timeslots_item['capacity'];
+						$capacity = $timeslots_item_to_parse['capacity'];
 					}
 				}
 
 			}
 		}
-		error_log('capacity: '.$capacity);
 
 		return $capacity;
 	}
