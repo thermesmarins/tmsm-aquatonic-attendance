@@ -167,6 +167,12 @@ class Tmsm_Aquatonic_Attendance_Public {
 			];
 
 		}
+
+		error_log(print_r($timeslots_items, true));
+
+		$current_day = date('w');
+		//$current_day = 6;
+
 		foreach($timeslots_items as $timeslots_item){
 			if($timeslots_item['daynumber'] === date('w')){
 
@@ -177,7 +183,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 					$before = trim($hoursminutes[0]);
 					$after = trim($hoursminutes[1]);
 					$current_time = current_time('H:i');
-					//$current_time = '16:00';
+					//$current_time = '13:00';
 
 					if(strtotime($before) < strtotime($current_time) && strtotime($current_time) < strtotime($after) ){
 						$open = true;
@@ -187,6 +193,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 
 			}
 		}
+		error_log('capacity: '.$capacity);
 
 		return $capacity;
 	}
