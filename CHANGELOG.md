@@ -1,3 +1,6 @@
+### 1.0.4: June 29th, 2020
+* Fix the timeslots parsing was ignoring the last item
+
 ### 1.0.3: June 08th, 2020
 * Fix refresh system, now realtime data cannot be cached
 
