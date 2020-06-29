@@ -1,3 +1,6 @@
+### 1.0.6: June 29th, 2020
+* Fix version number
+
 ### 1.0.5: June 29th, 2020
 * Fix notice error
 
