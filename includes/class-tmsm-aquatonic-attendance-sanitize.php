@@ -106,7 +106,9 @@ class Tmsm_Aquatonic_Attendance_Sanitize {
 	 *
 	 * @param  	string 		$date   		The date as collected from the form field
 	 * @param  	string 		$format 		The format to check the date against
-	 * @return 	string 		A validated, formatted date
+	 *
+	 * @return bool
+	 * @throws Exception
 	 */
 	private function validate_date( $date, $format = 'Y-m-d H:i:s' ) {
 
