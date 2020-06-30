@@ -1,3 +1,5 @@
+* Fix hard coded day/time of the week
+
 ### 1.0.6: June 29th, 2020
 * Fix version number
 

@@ -172,7 +172,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 		$timeslots_item = null;
 
 		$current_day = date('w');
-		$current_day = 6;
+		//$current_day = 6;
 
 		foreach($timeslots_items as $timeslots_key => $timeslots_item_to_parse){
 
@@ -183,7 +183,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 					$before = trim($hoursminutes[0]);
 					$after = trim($hoursminutes[1]);
 					$current_time = current_time('H:i');
-					$current_time = '13:00';
+					//$current_time = '13:00';
 
 					if(strtotime($before) <= strtotime($current_time) && strtotime($current_time) <= strtotime($after) ){
 						$open = true;
