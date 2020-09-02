@@ -294,6 +294,8 @@ class Tmsm_Aquatonic_Attendance_Public {
 			$occupation = 0;
 		}
 
+		$occupation = min($occupation, 100);
+
 		$options = $this->get_option();
 		$occupation_tier = 1;
 

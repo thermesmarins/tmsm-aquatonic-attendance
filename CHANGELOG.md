@@ -1,3 +1,5 @@
+* Cap occupation at 100%
+
 ### 1.0.7: June 30th, 2020
 * Fix hard coded day/time of the week
 
