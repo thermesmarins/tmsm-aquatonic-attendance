@@ -1,3 +1,4 @@
+### 1.0.8: September 02th, 2020
 * Cap occupation at 100%
 
 ### 1.0.7: June 30th, 2020
