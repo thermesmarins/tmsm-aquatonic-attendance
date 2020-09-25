@@ -1,3 +1,4 @@
+### 1.0.9: September 25th, 2020
 * Fix occupation when count is negative
 
 ### 1.0.8: September 02th, 2020
