@@ -288,11 +288,12 @@ class Tmsm_Aquatonic_Attendance_Public {
 		$count = intval(get_option('tmsm-aquatonic-attendance-count'));
 		$capacity = $this->get_timeslot_capacity();
 		if(!empty($capacity)){
-			$occupation = absint( 100 * $count / $capacity );
+			$occupation = round( 100 * $count / $capacity );
 		}
 		else{
 			$occupation = 0;
 		}
+		$occupation = max(0, $occupation);
 
 		$occupation = min($occupation, 100);
 
@@ -312,6 +313,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 
 		}
 
+
 		$data = [
 			'count' => $count,
 			'capacity' => $capacity,
@@ -319,7 +321,6 @@ class Tmsm_Aquatonic_Attendance_Public {
 			'occupation' => $occupation,
 			'occupation_rounded' => round( $occupation, - 1 ),
 			];
-
 		return $data;
 	}
 
@@ -331,9 +332,6 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 * @throws Exception
 	 */
 	public function refresh_attendance_data(){
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( 'refresh_attendance_data' );
-		}
 		$count = null;
 		$errors = [];
 
@@ -403,7 +401,6 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 * Ajax check nonce security
 	 */
 	private function ajax_checksecurity(){
-		error_log('ajax_checksecurity');
 
 		$security = sanitize_text_field( $_REQUEST['nonce'] );
 
@@ -413,25 +410,13 @@ class Tmsm_Aquatonic_Attendance_Public {
 		// Check security
 		if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquatonic-attendance-nonce-action' ) ) {
 			$errors[] = __('Token security is not valid', 'tmsm-aquatonic-attendance');
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log('Token security is not valid');
-			}
 		}
 		else {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'Token security is valid' );
-			}
 		}
 		if(check_ajax_referer( 'tmsm-aquatonic-attendance-nonce-action', 'nonce' ) === false){
 			$errors[] = __('Ajax referer is not valid', 'tmsm-aquatonic-attendance');
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log('Ajax referer is not valid');
-			}
 		}
 		else{
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'Ajax referer is valid' );
-			}
 		}
 
 		if(!empty($errors)){

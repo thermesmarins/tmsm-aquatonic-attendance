@@ -1,3 +1,5 @@
+* Fix occupation when count is negative
+
 ### 1.0.8: September 02th, 2020
 * Cap occupation at 100%
 
