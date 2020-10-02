@@ -569,6 +569,7 @@ class Tmsm_Aquatonic_Attendance_Admin {
 		if ( ! empty( $this->options[$atts['id']] ) ) {
 			$atts['value'] = $this->options[$atts['id']];
 		}
+
 		include( plugin_dir_path( __FILE__ ) . 'partials/' . $this->plugin_name . '-admin-field-text.php' );
 	}
 
