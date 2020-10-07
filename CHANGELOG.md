@@ -1,3 +1,5 @@
+* Update cron interval from 15 to 5 minutes
+
 ### 1.1.0: October 7th, 2020
 * Shortcode parameter "size" big two possible values (normal/big)
 

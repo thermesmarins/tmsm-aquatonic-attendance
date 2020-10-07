@@ -188,8 +188,8 @@ class Tmsm_Aquatonic_Attendance {
 	private function define_cron_schedule() {
 		add_filter('cron_schedules', function($schedules) {
 			$schedules['tmsm_aquatonic_attendance_refresh_schedule'] = array(
-				'interval' => MINUTE_IN_SECONDS * 15,
-				'display'  => __( 'Every 15 minutes', 'tmsm-aquatonic-attendance' ),
+				'interval' => MINUTE_IN_SECONDS * 5,
+				'display'  => __( 'Every 5 minutes', 'tmsm-aquatonic-attendance' ),
 			);
 			return $schedules;
 		}, 99);
