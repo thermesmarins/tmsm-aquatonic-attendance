@@ -1,3 +1,4 @@
+### 1.1.0: October 7th, 2020
 * Shortcode parameter "size" big two possible values (normal/big)
 
 ### 1.0.9: September 25th, 2020
