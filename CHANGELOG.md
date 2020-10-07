@@ -1,3 +1,5 @@
+* Shortcode parameter "size" big two possible values (normal/big)
+
 ### 1.0.9: September 25th, 2020
 * Fix occupation when count is negative
 

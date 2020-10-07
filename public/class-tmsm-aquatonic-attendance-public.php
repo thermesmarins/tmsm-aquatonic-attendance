@@ -220,6 +220,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 */
 	public function badge_shortcode($atts) {
 		$atts = shortcode_atts( array(
+			'size' => 'normal',
 			'option' => '',
 		), $atts, 'tmsm-aquatonic-attendance-calendar' );
 
@@ -238,7 +239,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 			$buttonclass = 'button';
 		}
 		*/
-		$output = '<div id="tmsm-aquatonic-attendance-badge-container">'.$output.'</div>';
+		$output = '<div id="tmsm-aquatonic-attendance-badge-container" class="tmsm-aquatonic-attendance-badge-'.$atts['size'].'">'.$output.'</div>';
 		return $output;
 	}
 

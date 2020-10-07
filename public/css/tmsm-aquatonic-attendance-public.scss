@@ -167,3 +167,53 @@ Due to the split circle of progress-left and progress right, we must use the ani
 #tmsm-aquatonic-attendance-badge-container .tooltip{
   min-width: 130px;
 }
+
+.tmsm-aquatonic-attendance-badge-big{
+
+
+
+  .progress {
+
+    width: 3 * $size;
+    height: 3 * $size;
+    line-height: 3 * $size;
+    border-radius: 3 * $size;
+
+    &:after{
+      border-width: (3 * $borderWidth);
+    }
+    .progress-bar{
+      border-width: (3 * $borderWidth);
+    }
+
+    .progress-left .progress-bar {
+      border-top-right-radius: (3 * $size/2);;
+      border-bottom-right-radius: (3 * $size/2);;
+    }
+
+    .progress-right {
+      .progress-bar {
+        border-top-left-radius: (3 * $size/2);;
+        border-bottom-left-radius: (3 * $size/2);;
+      }
+    }
+
+    .progress-value {
+      line-height: 20px;
+
+      .progress-value-number {
+        font-size: 400%;
+        line-height: 70px;
+      }
+
+      .progress-value-text {
+        font-size: 28px;
+        line-height: 40px;
+        padding: 0;
+      }
+
+    }
+
+  }
+
+}
