@@ -287,16 +287,26 @@ class Tmsm_Aquatonic_Attendance_Public {
 	private function get_realtime_data(){
 
 		$count = intval(get_option('tmsm-aquatonic-attendance-count'));
-		$capacity = $this->get_timeslot_capacity();
-		if(!empty($capacity)){
-			$occupation = round( 100 * $count / $capacity );
+		$percentage = intval(get_option('tmsm-aquatonic-attendance-percentage'));
+
+		if(!empty($percentage)){
+			$capacity = 100;
+			$occupation = $percentage;
 		}
 		else{
-			$occupation = 0;
-		}
-		$occupation = max(0, $occupation);
+			$capacity = $this->get_timeslot_capacity();
 
-		$occupation = min($occupation, 100);
+			if(!empty($capacity)){
+				$occupation = round( 100 * $count / $capacity );
+			}
+			else{
+				$occupation = 0;
+			}
+			$occupation = max(0, $occupation);
+
+			$occupation = min($occupation, 100);
+		}
+
 
 		$options = $this->get_option();
 		$occupation_tier = 1;
@@ -334,6 +344,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 */
 	public function refresh_attendance_data(){
 		$count = null;
+		$percentage = null;
 		$errors = [];
 
 		// Call web service
@@ -362,6 +373,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 				if(!empty($result_array['Status']) && $result_array['Status'] == 'true'){
 
 					$count = sanitize_text_field($result_array['Value']);
+					$percentage = sanitize_text_field($result_array['Pourcentage']);
 					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 						error_log( 'count: '.$count );
 					}
@@ -385,6 +397,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 
 		// Save Count to Options
 		update_option('tmsm-aquatonic-attendance-count', $count);
+		update_option('tmsm-aquatonic-attendance-percentage', $percentage);
 
 	}
 
