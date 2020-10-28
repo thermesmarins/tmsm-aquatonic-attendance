@@ -1,3 +1,4 @@
+### 1.1.2: October 28th, 2020
 * New webservice response parameter "Pourcentage", making it unneccessary to calculate capacity (for Aquatonic Saint-Malo in particular)
 
 ### 1.1.1: October 7th, 2020
