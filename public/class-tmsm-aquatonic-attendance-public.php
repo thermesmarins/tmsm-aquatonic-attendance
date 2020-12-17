@@ -148,7 +148,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 * @since    1.0.0
 	 * @return int
 	 */
-	public function get_timeslot_capacity(){
+	private function get_timeslot_capacity(){
 
 		$timeslots = $this->get_option('timeslots').PHP_EOL;
 		$timeslots_items = preg_split('/\r\n|\r|\n/', esc_attr($timeslots));
