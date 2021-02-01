@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquatonic Attendance\n"
-"POT-Creation-Date: 2020-06-08 10:30+0200\n"
-"PO-Revision-Date: 2020-06-08 10:31+0200\n"
+"POT-Creation-Date: 2021-02-01 17:36+0100\n"
+"PO-Revision-Date: 2021-02-01 17:36+0100\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language: fr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: vendor\n"
 
 #: admin/class-tmsm-aquatonic-attendance-admin.php:99
-#: admin/class-tmsm-aquatonic-attendance-admin.php:627
+#: admin/class-tmsm-aquatonic-attendance-admin.php:628
 msgid "TMSM Aquatonic Attendance Cron Schedule Exists"
 msgstr "La planification de cron de TMSM Aquatonic Attendance existe"
 
@@ -109,26 +109,26 @@ msgstr "Paliers"
 msgid "Time Slots"
 msgstr "Créneaux horaires"
 
-#: admin/class-tmsm-aquatonic-attendance-admin.php:630
+#: admin/class-tmsm-aquatonic-attendance-admin.php:631
 msgid "Performance"
 msgstr "Performance"
 
-#: admin/class-tmsm-aquatonic-attendance-admin.php:635
+#: admin/class-tmsm-aquatonic-attendance-admin.php:636
 msgid "Cron Schedule is not fired"
 msgstr "La planification du cron n’est pas exécutée"
 
-#: admin/class-tmsm-aquatonic-attendance-admin.php:644
+#: admin/class-tmsm-aquatonic-attendance-admin.php:645
 msgid "TMSM Aquatonic Attendance Cron Schedule is not added"
 msgstr "Le cron TMSM Aquatonic Attendance n’a pas été ajouté"
 
-#: admin/class-tmsm-aquatonic-attendance-admin.php:647
+#: admin/class-tmsm-aquatonic-attendance-admin.php:648
 msgid ""
 "Cron schedule is not fired, prices will not update from Aquatonic Attendance."
 msgstr ""
 "Le cron n’est pas planifié, les prix ne seront pas mis à joue depuis "
 "Aquatonic Attendance."
 
-#: admin/class-tmsm-aquatonic-attendance-admin.php:652
+#: admin/class-tmsm-aquatonic-attendance-admin.php:653
 msgid "Disable and enable again the plugin"
 msgstr "Désactiver puis activer l’extension"
 
@@ -136,17 +136,17 @@ msgstr "Désactiver puis activer l’extension"
 msgid "Save options"
 msgstr "Enregistrer les options"
 
-#: includes/class-tmsm-aquatonic-attendance-sanitize.php:190
+#: includes/class-tmsm-aquatonic-attendance-sanitize.php:192
 msgid "Specify the data type to sanitize."
 msgstr "Spécifier de type de données à normaliser."
 
-#: includes/class-tmsm-aquatonic-attendance-sanitize.php:196
+#: includes/class-tmsm-aquatonic-attendance-sanitize.php:198
 msgid "Forgot data type"
 msgstr "Type de données oublié"
 
 #: includes/class-tmsm-aquatonic-attendance.php:192
-msgid "Every 15 minutes"
-msgstr "Toutes les 15 minutes"
+msgid "Every 5 minutes"
+msgstr "Toutes les 5 minutes"
 
 #: public/class-tmsm-aquatonic-attendance-public.php:124
 msgid "Live Attendance"
@@ -156,34 +156,34 @@ msgstr "Affluence en direct"
 msgid "More Info About Attendance"
 msgstr "En savoir plus"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:203
-#: public/class-tmsm-aquatonic-attendance-public.php:204
+#: public/class-tmsm-aquatonic-attendance-public.php:209
+#: public/class-tmsm-aquatonic-attendance-public.php:210
 #, php-format
 msgid "TMSM Aquatonic Attendance cron is not scheduled on %s"
 msgstr "Le cron de TMSM Aquatonic Attendance n’est pas planifié sur %s"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:222
+#: public/class-tmsm-aquatonic-attendance-public.php:229
 msgid "Loading"
 msgstr "Chargement"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:346
+#: public/class-tmsm-aquatonic-attendance-public.php:364
 msgid "Web service is not available"
 msgstr "Le service web n’est pas disponible"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:363
+#: public/class-tmsm-aquatonic-attendance-public.php:382
 msgid "No data available"
 msgstr "Aucune donnée disponible"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:368
+#: public/class-tmsm-aquatonic-attendance-public.php:387
 #, php-format
 msgid "Error code %s: %s"
 msgstr "Code erreur %s : %s"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:407
+#: public/class-tmsm-aquatonic-attendance-public.php:426
 msgid "Token security is not valid"
 msgstr "Le jeton de sécurité n’est pas valide"
 
-#: public/class-tmsm-aquatonic-attendance-public.php:418
+#: public/class-tmsm-aquatonic-attendance-public.php:431
 msgid "Ajax referer is not valid"
 msgstr "Le référant ajax n’est pas valide"
 
