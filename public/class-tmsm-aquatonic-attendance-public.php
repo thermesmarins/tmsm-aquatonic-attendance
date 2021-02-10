@@ -375,7 +375,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 					$count = sanitize_text_field($result_array['Value']);
 					$percentage = sanitize_text_field($result_array['Pourcentage']);
 					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-						error_log( 'count: '.$count );
+						//error_log( 'count: '.$count );
 					}
 
 					if ( $count === null ) {
