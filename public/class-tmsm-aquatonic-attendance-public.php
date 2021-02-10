@@ -367,7 +367,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 				$result_array = json_decode( $result, true );
 
 				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					error_log( var_export( $result_array, true ) );
+					//error_log( var_export( $result_array, true ) );
 				}
 
 				if(!empty($result_array['Status']) && $result_array['Status'] == 'true'){
