@@ -206,8 +206,10 @@ class Tmsm_Aquatonic_Attendance_Public {
 
 			$email = wp_mail(
 				get_option( 'admin_email' ),
-				wp_specialchars_decode( sprintf( __('TMSM Aquatonic Attendance cron is not scheduled on %s', 'tmsm-aquatonic-attendance'), get_option( 'blogname' ) ) ),
-				wp_specialchars_decode( sprintf( __('TMSM Aquatonic Attendance cron is not scheduled on %s', 'tmsm-aquatonic-attendance'), get_option( 'blogname' ) ) )
+				wp_specialchars_decode( sprintf( __( 'TMSM Aquatonic Attendance cron is not scheduled on %s', 'tmsm-aquatonic-attendance' ),
+					get_option( 'blogname' ) ) ),
+				wp_specialchars_decode( sprintf( __( 'TMSM Aquatonic Attendance cron is not scheduled on %s', 'tmsm-aquatonic-attendance' ) . "\r\n"
+				                                 . get_option( 'siteurl' ), get_option( 'blogname' ) ) )
 			);
 		}
 

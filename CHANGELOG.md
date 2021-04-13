@@ -1,3 +1,6 @@
+### 1.1.3: April 13th, 2021
+* Add site URL to error cron email message
+
 ### 1.1.2: October 28th, 2020
 * New webservice response parameter "Pourcentage", making it unneccessary to calculate capacity (for Aquatonic Saint-Malo in particular)
 
