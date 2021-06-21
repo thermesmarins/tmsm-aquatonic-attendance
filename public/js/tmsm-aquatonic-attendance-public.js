@@ -89,6 +89,8 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
     action: 'tmsm-aquatonic-attendance-realtime',
     defaults: {
       count: 0,
+      aquospercentage: 0,
+      use: null,
       color: null,
       capacity: 0,
       occupation: 0,

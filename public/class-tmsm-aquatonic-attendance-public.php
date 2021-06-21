@@ -254,7 +254,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 		<script type="text/html" id="tmpl-tmsm-aquatonic-attendance-badge">
 
 			<# if ( data.capacity > 0) { #>
-			<a class="progress" data-count="{{ data.count }}" data-toggle="tooltip" data-placement="auto right" title="{{ TmsmAquatonicAttendanceApp.i18n.moreinfo }}" data-occupation="{{ data.occupation }}" data-percentage="{{ data.occupation_rounded }}" href="{{ TmsmAquatonicAttendanceApp.page }}">
+			<a class="progress" data-use="{{ data.use }}" data-count="{{ data.count }}" data-capacity="{{ data.capacity }}" data-percentage="{{ data.percentage}}" data-percentagerounded="{{ data.percentagerounded}}" href="{{ TmsmAquatonicAttendanceApp.page }}" data-toggle="tooltip" data-placement="auto right" title="{{ TmsmAquatonicAttendanceApp.i18n.moreinfo }}">
 				<span class="progress-left">
 					<span class="progress-bar progress-bar-color-{{ data.color }}"></span>
 				</span>
@@ -267,7 +267,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 						{{ TmsmAquatonicAttendanceApp.i18n.attendance }}
 						</span>
 					<span class="progress-value-number">
-							<b>{{ data.occupation }}%</b>
+							<b>{{ data.percentage }}%</b>
 						</span>
 
 
@@ -289,50 +289,54 @@ class Tmsm_Aquatonic_Attendance_Public {
 	private function get_realtime_data(){
 
 		$count = intval(get_option('tmsm-aquatonic-attendance-count'));
-		$percentage = intval(get_option('tmsm-aquatonic-attendance-percentage'));
+		$aquospercentage = intval(get_option('tmsm-aquatonic-attendance-aquospercentage'));
 
-		if(!empty($percentage)){
+		$use = 'count';
+
+		if(!empty($aquospercentage)){
+			$use = 'aquospercentage';
 			$capacity = 100;
-			$occupation = $percentage;
+			$percentage = $aquospercentage;
 		}
 		else{
 			$capacity = $this->get_timeslot_capacity();
 
 			if(!empty($capacity)){
-				$occupation = round( 100 * $count / $capacity );
+				$percentage = round( 100 * $count / $capacity );
 			}
 			else{
-				$occupation = 0;
+				$percentage = 0;
 			}
-			$occupation = max(0, $occupation);
+			$percentage = max(0, $percentage);
 
-			$occupation = min($occupation, 100);
+			$percentage = min($percentage, 100);
 		}
 
 
 		$options = $this->get_option();
-		$occupation_tier = 1;
+		$percentage_tier = 1;
 
 		for ($tier = 1; $tier <= 5; $tier++) {
-			if(!empty($options["tier${tier}_value"]) && $occupation > $options["tier${tier}_value"]){
-				$occupation_tier = ($tier+1);
+			if(!empty($options["tier${tier}_value"]) && $percentage > $options["tier${tier}_value"]){
+				$percentage_tier = ($tier+1);
 			}
 		}
 
 		$color = 'blue';
 
-		if(!empty($occupation_tier)){
-			$color = $options["tier${occupation_tier}_color"];
+		if(!empty($percentage_tier)){
+			$color = $options["tier${percentage_tier}_color"];
 
 		}
 
 
 		$data = [
 			'count' => $count,
+			'use' => $use,
 			'capacity' => $capacity,
 			'color' => $color,
-			'occupation' => $occupation,
-			'occupation_rounded' => round( $occupation, - 1 ),
+			'percentage' => $percentage,
+			'percentagerounded' => round( $percentage, - 1 ),
 			];
 		return $data;
 	}
@@ -346,7 +350,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 */
 	public function refresh_attendance_data(){
 		$count = null;
-		$percentage = null;
+		$aquospercentage = null;
 		$errors = [];
 
 		// Call web service
@@ -375,7 +379,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 				if(!empty($result_array['Status']) && $result_array['Status'] == 'true'){
 
 					$count = sanitize_text_field($result_array['Value']);
-					$percentage = sanitize_text_field($result_array['Pourcentage']);
+					$aquospercentage = sanitize_text_field($result_array['Pourcentage']);
 					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 						//error_log( 'count: '.$count );
 					}
@@ -399,7 +403,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 
 		// Save Count to Options
 		update_option('tmsm-aquatonic-attendance-count', $count);
-		update_option('tmsm-aquatonic-attendance-percentage', $percentage);
+		update_option('tmsm-aquatonic-attendance-aquospercentage', $aquospercentage);
 
 	}
 

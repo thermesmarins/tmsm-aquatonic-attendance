@@ -1,3 +1,6 @@
+### 1.1.4: June 21st, 2021
+* Variables refactoring
+
 ### 1.1.3: April 13th, 2021
 * Add site URL to error cron email message
 

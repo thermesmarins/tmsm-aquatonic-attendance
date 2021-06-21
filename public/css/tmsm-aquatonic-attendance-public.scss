@@ -13,7 +13,7 @@ $text-color: white;
 
 //Create how many steps
 $howManySteps: 10; //this needs to be even.
-//for fun try using 20 and changine in the HTML the data-percentage to 15 or 85
+//for fun try using 20 and changine in the HTML the data-percentagerounded to 15 or 85
 
 .progress {
   display: inherit;
@@ -128,7 +128,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
 
   //animation only the left side if below 50%
   @if $i <= ($howManySteps/2) {
-    .progress[data-percentage="#{$stepName}"] {
+    .progress[data-percentagerounded="#{$stepName}"] {
       .progress-right .progress-bar {
         animation: loading-#{$i} $animationTime linear forwards;
       }
@@ -137,7 +137,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
   }
   //animation only the right side if above 50%
   @if $i > ($howManySteps/2)  {
-    .progress[data-percentage="#{$stepName}"] {
+    .progress[data-percentagerounded="#{$stepName}"] {
       .progress-right .progress-bar {
         animation: loading-#{($howManySteps/2)} $animationTime linear forwards; //set the animation to longest animation
       }
