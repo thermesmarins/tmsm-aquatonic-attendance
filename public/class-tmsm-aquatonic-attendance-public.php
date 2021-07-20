@@ -206,10 +206,8 @@ class Tmsm_Aquatonic_Attendance_Public {
 
 			$email = wp_mail(
 				get_option( 'admin_email' ),
-				wp_specialchars_decode( sprintf( __( 'TMSM Aquatonic Attendance cron is not scheduled on %s', 'tmsm-aquatonic-attendance' ),
-					get_option( 'blogname' ) ) ),
-				wp_specialchars_decode( sprintf( __( 'TMSM Aquatonic Attendance cron is not scheduled on %s', 'tmsm-aquatonic-attendance' ) . "\r\n"
-				                                 . get_option( 'siteurl' ), get_option( 'blogname' ) ) )
+				wp_specialchars_decode( sprintf( __( 'TMSM Aquatonic Attendance cron is not scheduled on %s', 'tmsm-aquatonic-attendance' ), get_option( 'blogname' ) ) ),
+				wp_specialchars_decode( sprintf( __( 'TMSM Aquatonic Attendance cron is not scheduled on %s', 'tmsm-aquatonic-attendance' ) , "\r\n" . get_option( 'siteurl' ) . ' ' . get_option( 'blogname' ) ) )
 			);
 		}
 
@@ -353,14 +351,20 @@ class Tmsm_Aquatonic_Attendance_Public {
 		$aquospercentage = null;
 		$errors = [];
 
-		// Call web service
 		$settings_webserviceurl = $this->get_option( 'webservicecounturl' );
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log('tmsm-aquatonic-attendance refresh_attendance_data:');
+		}
+
+		// Call web service
 		if ( ! empty( $settings_webserviceurl ) ) {
 
 			// Connect with cURL
 			$ch = curl_init();
 			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, true );
 			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+			curl_setopt( $ch, CURLOPT_TIMEOUT, 10 );
 			curl_setopt( $ch, CURLOPT_URL, $settings_webserviceurl );
 			$result = curl_exec( $ch );
 			curl_close( $ch );
@@ -373,16 +377,13 @@ class Tmsm_Aquatonic_Attendance_Public {
 				$result_array = json_decode( $result, true );
 
 				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					//error_log( var_export( $result_array, true ) );
+					error_log( var_export( $result_array, true ) );
 				}
 
 				if(!empty($result_array['Status']) && $result_array['Status'] == 'true'){
 
 					$count = sanitize_text_field($result_array['Value']);
 					$aquospercentage = sanitize_text_field($result_array['Pourcentage']);
-					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-						//error_log( 'count: '.$count );
-					}
 
 					if ( $count === null ) {
 						$errors[] = __( 'No data available', 'tmsm-aquatonic-attendance' );
@@ -396,12 +397,32 @@ class Tmsm_Aquatonic_Attendance_Public {
 			}
 		}
 
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && ! empty( $errors ) ) {
-			error_log('$errors:');
-			error_log(print_r($errors, true));
+
+		// Logging errors
+		if ( ! empty( $errors ) ) {
+			error_log( 'tmsm-aquatonic-attendance-errors:' );
+			error_log( print_r( $errors, true ) );
+
+			$last_error_date = get_option( 'tmsm-aquatonic-attendance-lasterrordate', null );
+
+			$send_error_email = empty( $last_error_date ) || $last_error_date !== date('Y-m-d');
+
+			// Send an email about the error
+			if($send_error_email === true) {
+				$email = wp_mail(
+					get_option( 'admin_email' ),
+					wp_specialchars_decode( sprintf( __( 'TMSM Aquatonic Attendance web service is down on %s', 'tmsm-aquatonic-attendance' ), get_option( 'blogname' ) ) ),
+					wp_specialchars_decode( sprintf( __( 'TMSM Aquatonic Attendance web service is down on %s', 'tmsm-aquatonic-attendance' ) , "\r\n" . get_option( 'siteurl' ) . ' ' . get_option( 'blogname' ) ) )
+				);
+			}
+
+			update_option( 'tmsm-aquatonic-attendance-lasterrordate', date( 'Y-m-d' ) );
 		}
 
-		// Save Count to Options
+		// Save errors
+		update_option('tmsm-aquatonic-attendance-errors', $errors);
+
+		// Save Count
 		update_option('tmsm-aquatonic-attendance-count', $count);
 		update_option('tmsm-aquatonic-attendance-aquospercentage', $aquospercentage);
 

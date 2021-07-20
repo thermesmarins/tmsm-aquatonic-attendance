@@ -1,3 +1,7 @@
+* Web service error: send email to admin
+* Web service error: display error in settings page
+* Web service timeout defined to 10 seconds
+
 ### 1.1.4: June 21st, 2021
 * Variables refactoring
 

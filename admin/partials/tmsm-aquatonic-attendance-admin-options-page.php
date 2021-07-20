@@ -12,6 +12,19 @@
 ?>
 <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
+<?php
+// Display errors in settings page
+$errors = get_option( 'tmsm-aquatonic-attendance-errors' );
+if ( ! empty( $errors ) && is_array( $errors ) ) {?>
+<div class="notice notice-error settings-error is-dismissible">
+	<p><?php
+		echo __( 'There are errors with the web service:', 'tmsm-aquatonic-attendance' );
+		echo '<br>';
+		echo join( '<br>', $errors );?></p></div>
+<?php
+}
+?>
+
 <form method="post" action="options.php"><?php
 	settings_fields( $this->plugin_name . '-options' );
 	do_settings_sections( $this->plugin_name );
