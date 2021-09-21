@@ -1,3 +1,6 @@
+* Web service error: send error details in email
+* Web service error: store last error details in options
+
 ### 1.1.5: July 20th, 2021
 * Web service error: send email to admin
 * Web service error: display error in settings page

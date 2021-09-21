@@ -412,15 +412,13 @@ class Tmsm_Aquatonic_Attendance_Public {
 				$email = wp_mail(
 					get_option( 'admin_email' ),
 					wp_specialchars_decode( sprintf( __( 'TMSM Aquatonic Attendance web service is down on %s', 'tmsm-aquatonic-attendance' ), get_option( 'blogname' ) ) ),
-					wp_specialchars_decode( sprintf( __( 'TMSM Aquatonic Attendance web service is down on %s', 'tmsm-aquatonic-attendance' ) , "\r\n" . get_option( 'siteurl' ) . ' ' . get_option( 'blogname' ) ) )
+					wp_specialchars_decode( sprintf( __( 'TMSM Aquatonic Attendance web service is down on %s with following errors: %s', 'tmsm-aquatonic-attendance' ) , "\r\n" . get_option( 'siteurl' ) . ' ' . get_option( 'blogname' ), "\r\n" . print_r( $errors, true ) ) )
 				);
 			}
 
 			update_option( 'tmsm-aquatonic-attendance-lasterrordate', date( 'Y-m-d' ) );
+			update_option( 'tmsm-aquatonic-attendance-lasterror', $errors );
 		}
-
-		// Save errors
-		update_option('tmsm-aquatonic-attendance-errors', $errors);
 
 		// Save Count
 		update_option('tmsm-aquatonic-attendance-count', $count);
