@@ -1,3 +1,5 @@
+* New type of badge "brouillard"
+
 ### 1.1.6: September 21st, 2021
 * Web service error: send error details in email
 * Web service error: store last error details in options

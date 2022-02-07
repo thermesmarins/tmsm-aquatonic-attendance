@@ -339,6 +339,19 @@ class Tmsm_Aquatonic_Attendance_Admin {
 		);
 
 
+		add_settings_field(
+			'mistcapacity',
+			esc_html( __( 'Mist Capacity', 'tmsm-aquatonic-attendance' )),
+			array( $this, 'field_text' ),
+			$this->plugin_name,
+			$this->plugin_name . '-timeslots',
+			array(
+				'id' => 'mistcapacity',
+				'type' => 'number',
+			)
+		);
+
+
 
 	}
 
@@ -607,6 +620,7 @@ class Tmsm_Aquatonic_Attendance_Admin {
 		$options[] = array( 'webservicecounturl', 'text', '' );
 		$options[] = array( 'pageid', 'text', '' );
 		$options[] = array( 'timeslots', 'textarea', '' );
+		$options[] = array( 'mistcapacity', 'text', '' );
 		for ($tier = 1; $tier <= 5; $tier++) {
 			$options[] = array( "tier${tier}_value", 'text', '' );
 			$options[] = array( "tier${tier}_color", 'text', '' );

@@ -168,9 +168,34 @@ Due to the split circle of progress-left and progress right, we must use the ani
   min-width: 130px;
 }
 
+.tmsm-aquatonic-attendance-badge-brouillard{
+  text-align: center;
+  color: #0a2d6c;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: black;
+  color: #8fe8fa;
+  text-shadow: -4px 2px 6px rgb(46, 168, 255);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 .tmsm-aquatonic-attendance-badge-big{
 
-
+  .count-text{
+    display: block;
+    font-size: 180px;
+    line-height: 150px;
+    margin-top: 80px;
+  }
+  .count-number{
+    display: block;
+    font-size: 601px;
+    line-height: 420px;
+  }
 
   .progress {
 

@@ -88,6 +88,8 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
   TmsmAquatonicAttendanceApp.BadgeModel = BaseModel.extend( {
     action: 'tmsm-aquatonic-attendance-realtime',
     defaults: {
+      camera: '',
+      remaining: 0,
       count: 0,
       aquospercentage: 0,
       use: null,
@@ -136,7 +138,10 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
 
       //$list.append( '<option>'+TmsmAquatonicAttendanceApp.strings.no_selection+'</option>' );
       this.collection.each( function( model ) {
-        var item = new TmsmAquatonicAttendanceApp.BadgesListItemView( { model: model } );
+        var item = new TmsmAquatonicAttendanceApp.BadgesListItemView( {
+          model: model,
+        } );
+        item.template = wp.template( 'tmsm-aquatonic-attendance-badge-'+model.attributes.camera );
         $list.append( item.render().$el );
       }, this );
 
@@ -181,7 +186,9 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
    */
   TmsmAquatonicAttendanceApp.refreshData = function() {
     console.log('TmsmAquatonicAttendanceApp refreshData');
-    TmsmAquatonicAttendanceApp.badge.fetch();
+    TmsmAquatonicAttendanceApp.badge.fetch({ data: {
+        camera: TmsmAquatonicAttendanceApp.camera,
+      } });
   };
 
   TmsmAquatonicAttendanceApp.runTimer = function() {
@@ -196,6 +203,7 @@ var TmsmAquatonicAttendanceApp = TmsmAquatonicAttendanceApp || {};
    */
   TmsmAquatonicAttendanceApp.init = function() {
 
+    TmsmAquatonicAttendanceApp.camera = $('#tmsm-aquatonic-attendance-badge-container').data('camera');
     TmsmAquatonicAttendanceApp.badge = new TmsmAquatonicAttendanceApp.BadgesCollection();
     TmsmAquatonicAttendanceApp.badge.reset( TmsmAquatonicAttendanceApp.data.realtime );
     TmsmAquatonicAttendanceApp.badgeList = new TmsmAquatonicAttendanceApp.BadgesListView( { collection: TmsmAquatonicAttendanceApp.badge } );

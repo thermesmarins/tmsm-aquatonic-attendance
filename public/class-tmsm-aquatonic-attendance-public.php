@@ -112,19 +112,21 @@ class Tmsm_Aquatonic_Attendance_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquatonic-attendance-public.js', array( 'jquery', 'backbone', 'wp-util' ), $this->version, true );
 
 
-
 		// Params
 		$params = [
-			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
+			'ajaxurl'      => admin_url( 'admin-ajax.php' ),
 			'nonce'        => wp_create_nonce( 'tmsm-aquatonic-attendance-nonce-action' ),
-			'locale'   => $this->get_locale(),
-			'timer_period' => 60*5, //seconds
-			'page' => get_permalink($this->get_option('pageid')),
-			'i18n'     => [
-				'attendance'          => __( 'Live Attendance', 'tmsm-aquatonic-attendance' ),
-				'moreinfo'          => __( 'More Info About Attendance', 'tmsm-aquatonic-attendance' ),
+			'locale'       => $this->get_locale(),
+			'timer_period' => 60 * 5, //seconds
+			'page'         => get_permalink( $this->get_option( 'pageid' ) ),
+			'i18n'         => [
+				'attendance'      => __( 'Live Attendance', 'tmsm-aquatonic-attendance' ),
+				'moreinfo'        => __( 'More Info About Attendance', 'tmsm-aquatonic-attendance' ),
+				'nodata'          => __( 'No information at this moment', 'tmsm-aquatonic-attendance' ),
+				'usedplaces'      => __( 'Used Places', 'tmsm-aquatonic-attendance' ),
+				'remainingplaces' => __( 'Remaining Places', 'tmsm-aquatonic-attendance' ),
 			],
-			'data'     => [
+			'data'         => [
 				'realtime' => [],
 			],
 		];
@@ -218,12 +220,19 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public function badge_shortcode($atts) {
+	public function badge_shortcode($atts): string {
 		$atts = shortcode_atts( array(
+			'camera_name' => '',
 			'size' => 'normal',
 			'option' => '',
 		), $atts, 'tmsm-aquatonic-attendance-calendar' );
 
+		// Camera name needs to be setup
+		if( empty( $atts['camera_name']) ) {
+			return '';
+		}
+
+		// Generate output
 		$output = '
 		<div id="tmsm-aquatonic-attendance-badge-select"></div>
 		<div id="tmsm-aquatonic-attendance-badge-loading">'.__( 'Loading', 'tmsm-aquatonic-attendance' ).'</div>
@@ -239,17 +248,17 @@ class Tmsm_Aquatonic_Attendance_Public {
 			$buttonclass = 'button';
 		}
 		*/
-		$output = '<div id="tmsm-aquatonic-attendance-badge-container" class="tmsm-aquatonic-attendance-badge-'.$atts['size'].'">'.$output.'</div>';
-		return $output;
+
+		return '<div id="tmsm-aquatonic-attendance-badge-container" data-camera="' . esc_attr( $atts['camera_name']) . '" class="tmsm-aquatonic-attendance-badge-' . esc_attr( $atts['size']) . ' tmsm-aquatonic-attendance-badge-' . esc_attr( $atts['camera_name']) . '">' . $output . '</div>';
 	}
 
 	/**
-	 * Have Voucher Template
+	 * Badge Template (bassin)
 	 */
-	public function badge_template(){
+	public function badge_template_bassin(){
 		?>
 
-		<script type="text/html" id="tmpl-tmsm-aquatonic-attendance-badge">
+		<script type="text/html" id="tmpl-tmsm-aquatonic-attendance-badge-bassin">
 
 			<# if ( data.capacity > 0) { #>
 			<a class="progress" data-use="{{ data.use }}" data-count="{{ data.count }}" data-capacity="{{ data.capacity }}" data-percentage="{{ data.percentage}}" data-percentagerounded="{{ data.percentagerounded}}" href="{{ TmsmAquatonicAttendanceApp.page }}" data-toggle="tooltip" data-placement="auto right" title="{{ TmsmAquatonicAttendanceApp.i18n.moreinfo }}">
@@ -280,75 +289,107 @@ class Tmsm_Aquatonic_Attendance_Public {
 
 
 	/**
-	 * Get attendance data
-	 *
-	 * @return array
+	 * Badge Template (brouillard)
 	 */
-	private function get_realtime_data(){
-
-		$count = intval(get_option('tmsm-aquatonic-attendance-count'));
-		$aquospercentage = intval(get_option('tmsm-aquatonic-attendance-aquospercentage'));
-
-		$use = 'count';
-
-		if(!empty($aquospercentage)){
-			$use = 'aquospercentage';
-			$capacity = 100;
-			$percentage = $aquospercentage;
-		}
-		else{
-			$capacity = $this->get_timeslot_capacity();
-
-			if(!empty($capacity)){
-				$percentage = round( 100 * $count / $capacity );
-			}
-			else{
-				$percentage = 0;
-			}
-			$percentage = max(0, $percentage);
-
-			$percentage = min($percentage, 100);
-		}
-
-
-		$options = $this->get_option();
-		$percentage_tier = 1;
-
-		for ($tier = 1; $tier <= 5; $tier++) {
-			if(!empty($options["tier${tier}_value"]) && $percentage > $options["tier${tier}_value"]){
-				$percentage_tier = ($tier+1);
-			}
-		}
-
-		$color = 'blue';
-
-		if(!empty($percentage_tier)){
-			$color = $options["tier${percentage_tier}_color"];
-
-		}
-
-
-		$data = [
-			'count' => $count,
-			'use' => $use,
-			'capacity' => $capacity,
-			'color' => $color,
-			'percentage' => $percentage,
-			'percentagerounded' => round( $percentage, - 1 ),
-			];
-		return $data;
+	public function badge_template_brouillard(){
+		?>
+		<script type="text/html" id="tmpl-tmsm-aquatonic-attendance-badge-brouillard">
+			<# if ( data.remaining ) { #>
+			<span class="count-number"><b>{{ data.remaining }}</b></span>
+			<span class="count-text">{{ TmsmAquatonicAttendanceApp.i18n.remainingplaces }}</span>
+			<# } else { #>
+			{{ TmsmAquatonicAttendanceApp.i18n.nodata }}
+			<# } #>
+		</script>
+		<?php
 	}
 
 
 	/**
-	 * Refresh attendance data
+	 * Get attendance data
+	 *
+	 * @param string $camera
 	 *
 	 * @return array
+	 */
+	private function get_realtime_data( string $camera ): array {
+
+		$realtime_data = get_option( 'tmsm-aquatonic-attendance-data' );
+
+		// Camera name must be setup
+		if ( empty( $camera ) ) {
+			return [];
+		}
+		$data = [];
+
+		// Browse all camera data
+		foreach ( $realtime_data as $data_camera ) {
+			error_log(print_r($data_camera, true));
+			$use = 'count';
+			$count = $data_camera->count;
+			if ( ! empty( $data_camera->pourcentage ) ) {
+				$use        = 'aquospercentage';
+				$capacity   = 100;
+				$percentage = $data_camera->pourcentage;
+			} else {
+				$capacity = $this->get_timeslot_capacity();
+
+				if ( ! empty( $capacity ) ) {
+					$percentage = round( 100 * $data_camera->number / $capacity );
+				} else {
+					$percentage = 0;
+				}
+				$percentage = max( 0, $percentage );
+
+				$percentage = min( $percentage, 100 );
+			}
+
+			$options         = $this->get_option();
+			$percentage_tier = 1;
+
+			for ( $tier = 1; $tier <= 5; $tier ++ ) {
+				if ( ! empty( $options["tier${tier}_value"] ) && $percentage > $options["tier${tier}_value"] ) {
+					$percentage_tier = ( $tier + 1 );
+				}
+			}
+
+			$color = 'blue';
+
+			if ( ! empty( $percentage_tier ) ) {
+				$color = $options["tier${percentage_tier}_color"];
+			}
+
+			$remaining = null;
+
+			if ( $data_camera->camera_name === 'brouillard' ) {
+				$capacity = $this->get_option( 'mistcapacity' );
+				$remaining = $capacity - $count;
+			}
+
+
+			$data[ $data_camera->camera_name ] = [
+				'remaining'         => $remaining,
+				'count'             => $count,
+				'camera'            => $data_camera->camera_name,
+				'use'               => $use,
+				'capacity'          => $capacity,
+				'color'             => $color,
+				'percentage'        => $percentage,
+				'percentagerounded' => round( $percentage, - 1 ),
+			];
+		}
+
+		error_log(print_r($data, true));
+		return $data[ $camera ] ?? [];
+	}
+
+	/**
+	 * Refresh attendance data
+	 *
 	 * @throws Exception
 	 */
-	public function refresh_attendance_data(){
-		$count = null;
-		$aquospercentage = null;
+	public function refresh_attendance_data() {
+		$data = [];
 		$errors = [];
 
 		$settings_webserviceurl = $this->get_option( 'webservicecounturl' );
@@ -360,43 +401,56 @@ class Tmsm_Aquatonic_Attendance_Public {
 		// Call web service
 		if ( ! empty( $settings_webserviceurl ) ) {
 
-			// Connect with cURL
-			$ch = curl_init();
-			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, true );
-			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-			curl_setopt( $ch, CURLOPT_TIMEOUT, 10 );
-			curl_setopt( $ch, CURLOPT_URL, $settings_webserviceurl );
-			$result = curl_exec( $ch );
-			curl_close( $ch );
-			$result_array = [];
+			$headers = [
+				'Content-Type' => 'application/json; charset=utf-8',
+				'Cache-Control' => 'no-cache',
+			];
 
-			if(empty($result)){
+			$response = wp_remote_get(
+				$settings_webserviceurl,
+				array(
+					'headers'     => $headers,
+					'timeout' => 10,
+				)
+			);
+			$response_code = wp_remote_retrieve_response_code( $response );
+			$response_data = json_decode( wp_remote_retrieve_body( $response ) );
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				$response_data = json_decode('{"status": true,"error": "","data":[{"camera_name":"bassin","number":15,"pourcentage":"30"},{"camera_name":"brouillard","number":12,"pourcentage":""}]}');
+				error_log(print_r($response_data, true));
+			}
+
+			// Parsing response
+			if(empty($response)){
+				error_log( __( 'Web service is not available', 'tmsm-aquatonic-attendance' ) );
 				$errors[] = __( 'Web service is not available', 'tmsm-aquatonic-attendance' );
 			}
 			else{
-				$result_array = json_decode( $result, true );
-
-				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					error_log( var_export( $result_array, true ) );
+				if ( $response_code >= 400 ) {
+					error_log( sprintf( __( 'Error: Delivery URL returned response code: %s', 'tmsm-aquatonic-attendance' ), absint( $response_code ) ) );
+					$errors[] = sprintf( __( 'Error: Delivery URL returned response code: %s', 'tmsm-aquatonic-attendance' ), absint( $response_code ) );
 				}
 
-				if(!empty($result_array['Status']) && $result_array['Status'] == 'true'){
-
-					$count = sanitize_text_field($result_array['Value']);
-					$aquospercentage = sanitize_text_field($result_array['Pourcentage']);
-
-					if ( $count === null ) {
-						$errors[] = __( 'No data available', 'tmsm-aquatonic-attendance' );
-					}
+				if ( is_wp_error( $response ) ) {
+					error_log('Error message: '. $response->get_error_message());
+					$errors[] = sprintf( __( 'Error message: %s', 'tmsm-aquatonic-course-booking' ), $response->get_error_message() );
 				}
+
+				// No errors, success
+				if ( ! empty( $response_data->status ) && $response_data->status == 'true' ) {
+					$data = $response_data->data;
+				}
+				// Some error detected
 				else{
-					if(!empty($result_array['ErrorCode']) && !empty($result_array['ErrorMessage'])){
-						$errors[] = sprintf(__( 'Error code %s: %s', 'tmsm-aquatonic-attendance' ), $result_array['ErrorCode'], $result_array['ErrorMessage']);
+					if ( ! empty( $response_data->error ) ) {
+						$errors[] = sprintf( __( 'Error %s', 'tmsm-aquatonic-attendance' ), $response_data->error );
+					} else {
+						$errors[] = __( 'Unknown error', 'tmsm-aquatonic-attendance' );
 					}
 				}
 			}
-		}
 
+		}
 
 		// Logging errors
 		if ( ! empty( $errors ) ) {
@@ -409,7 +463,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 
 			// Send an email about the error
 			if($send_error_email === true) {
-				$email = wp_mail(
+				wp_mail(
 					get_option( 'admin_email' ),
 					wp_specialchars_decode( sprintf( __( 'TMSM Aquatonic Attendance web service is down on %s', 'tmsm-aquatonic-attendance' ), get_option( 'blogname' ) ) ),
 					wp_specialchars_decode( sprintf( __( 'TMSM Aquatonic Attendance web service is down on %s with following errors: %s', 'tmsm-aquatonic-attendance' ) , "\r\n" . get_option( 'siteurl' ) . ' ' . get_option( 'blogname' ), "\r\n" . print_r( $errors, true ) ) )
@@ -421,8 +475,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 		}
 
 		// Save Count
-		update_option('tmsm-aquatonic-attendance-count', $count);
-		update_option('tmsm-aquatonic-attendance-aquospercentage', $aquospercentage);
+		update_option('tmsm-aquatonic-attendance-data', $data);
 
 	}
 
@@ -450,12 +503,8 @@ class Tmsm_Aquatonic_Attendance_Public {
 		if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquatonic-attendance-nonce-action' ) ) {
 			$errors[] = __('Token security is not valid', 'tmsm-aquatonic-attendance');
 		}
-		else {
-		}
 		if(check_ajax_referer( 'tmsm-aquatonic-attendance-nonce-action', 'nonce' ) === false){
 			$errors[] = __('Ajax referer is not valid', 'tmsm-aquatonic-attendance');
-		}
-		else{
 		}
 
 		if(!empty($errors)){
@@ -472,8 +521,10 @@ class Tmsm_Aquatonic_Attendance_Public {
 	 */
 	public function ajax_realtime() {
 
+		$camera = sanitize_text_field($_REQUEST['camera']);
+
 		$this->ajax_checksecurity();
-		$this->ajax_return( $this->get_realtime_data() );
+		$this->ajax_return( $this->get_realtime_data($camera) );
 
 	}
 
