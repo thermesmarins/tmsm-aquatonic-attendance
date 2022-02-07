@@ -1,3 +1,4 @@
+### 2.0.0: February 7th, 2022
 * New type of badge "brouillard"
 
 ### 1.1.6: September 21st, 2021

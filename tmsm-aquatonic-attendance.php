@@ -16,10 +16,10 @@
  * Plugin Name:       TMSM Aquatonic Attendance
  * Plugin URI:        https://github.com/thermesmarins/tmsm-aquatonic-attendance
  * Description:       Display Aquatonic Attendance daily prices (best price) in a calendar view
- * Version:           1.1.6
+ * Version:           2.0.0
  * Author:            Nicolas Mollet
  * Author URI:        https://github.com/nicomollet
- * Requires PHP:      5.6
+ * Requires PHP:      7.4
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       tmsm-aquatonic-attendance
@@ -38,7 +38,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'TMSM_AQUATONIC_ATTENDANCE_VERSION', '1.1.6' );
+define( 'TMSM_AQUATONIC_ATTENDANCE_VERSION', '2.0.0' );
 
 /**
  * The code that runs during plugin activation.
