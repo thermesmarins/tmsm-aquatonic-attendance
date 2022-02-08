@@ -1,3 +1,6 @@
+### 2.0.1: February 8th, 2022
+* Remove debug
+
 ### 2.0.0: February 7th, 2022
 * New type of badge "brouillard"
 

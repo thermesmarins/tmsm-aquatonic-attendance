@@ -415,10 +415,6 @@ class Tmsm_Aquatonic_Attendance_Public {
 			);
 			$response_code = wp_remote_retrieve_response_code( $response );
 			$response_data = json_decode( wp_remote_retrieve_body( $response ) );
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				$response_data = json_decode('{"status": true,"error": "","data":[{"camera_name":"bassin","number":15,"pourcentage":"30"},{"camera_name":"brouillard","number":12,"pourcentage":""}]}');
-				error_log(print_r($response_data, true));
-			}
 
 			// Parsing response
 			if(empty($response)){
