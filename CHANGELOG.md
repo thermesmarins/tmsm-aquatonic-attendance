@@ -1,3 +1,5 @@
+* Handle "Full" capacity
+
 ### 2.0.1: February 8th, 2022
 * Remove debug
 

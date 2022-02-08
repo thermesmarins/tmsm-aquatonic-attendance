@@ -111,7 +111,6 @@ class Tmsm_Aquatonic_Attendance_Public {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquatonic-attendance-public.js', array( 'jquery', 'backbone', 'wp-util' ), $this->version, true );
 
-
 		// Params
 		$params = [
 			'ajaxurl'      => admin_url( 'admin-ajax.php' ),
@@ -124,7 +123,9 @@ class Tmsm_Aquatonic_Attendance_Public {
 				'moreinfo'        => __( 'More Info About Attendance', 'tmsm-aquatonic-attendance' ),
 				'nodata'          => __( 'No information at this moment', 'tmsm-aquatonic-attendance' ),
 				'usedplaces'      => __( 'Used Places', 'tmsm-aquatonic-attendance' ),
-				'remainingplaces' => __( 'Remaining Places', 'tmsm-aquatonic-attendance' ),
+				'remainingplaces' => __( 'remaining places', 'tmsm-aquatonic-attendance' ),
+				'remainingplace'  => __( 'remaining place', 'tmsm-aquatonic-attendance' ),
+				'complete'        => __( 'Full', 'tmsm-aquatonic-attendance' ),
 			],
 			'data'         => [
 				'realtime' => [],
@@ -294,9 +295,20 @@ class Tmsm_Aquatonic_Attendance_Public {
 	public function badge_template_brouillard(){
 		?>
 		<script type="text/html" id="tmpl-tmsm-aquatonic-attendance-badge-brouillard">
-			<# if ( data.remaining ) { #>
-			<span class="count-number"><b>{{ data.remaining }}</b></span>
-			<span class="count-text">{{ TmsmAquatonicAttendanceApp.i18n.remainingplaces }}</span>
+			<# if ( data.remaining !== null ) { #>
+				<# if ( data.remaining === 0 ) { #>
+					<span class="count-text count-text-complete">{{ TmsmAquatonicAttendanceApp.i18n.complete }}</span>
+				<# } else { #>
+					<span class="count-number"><b>{{ data.remaining }}</b></span>
+					<span class="count-text">
+						<# if ( data.remaining === 1 ) { #>
+						{{ TmsmAquatonicAttendanceApp.i18n.remainingplace }}
+						<# } else { #>
+						{{ TmsmAquatonicAttendanceApp.i18n.remainingplaces }}
+						<# } #>
+					</span>
+				<# } #>
+
 			<# } else { #>
 			{{ TmsmAquatonicAttendanceApp.i18n.nodata }}
 			<# } #>
@@ -324,9 +336,9 @@ class Tmsm_Aquatonic_Attendance_Public {
 
 		// Browse all camera data
 		foreach ( $realtime_data as $data_camera ) {
-			error_log(print_r($data_camera, true));
 			$use = 'count';
 			$count = $data_camera->count;
+			$count = max( 0, $count ); // is superior to 0
 			if ( ! empty( $data_camera->pourcentage ) ) {
 				$use        = 'aquospercentage';
 				$capacity   = 100;
@@ -364,6 +376,7 @@ class Tmsm_Aquatonic_Attendance_Public {
 			if ( $data_camera->camera_name === 'brouillard' ) {
 				$capacity = $this->get_option( 'mistcapacity' );
 				$remaining = $capacity - $count;
+				$remaining = max( 0, $remaining);
 			}
 
 
@@ -379,7 +392,6 @@ class Tmsm_Aquatonic_Attendance_Public {
 			];
 		}
 
-		error_log(print_r($data, true));
 		return $data[ $camera ] ?? [];
 	}
 
@@ -432,8 +444,9 @@ class Tmsm_Aquatonic_Attendance_Public {
 					$errors[] = sprintf( __( 'Error message: %s', 'tmsm-aquatonic-course-booking' ), $response->get_error_message() );
 				}
 
+
 				// No errors, success
-				if ( ! empty( $response_data->status ) && $response_data->status == 'true' ) {
+				if ( ! empty( $response_data->status ) && ($response_data->status === 'true' ||  $response_data->status === true ) ) {
 					$data = $response_data->data;
 				}
 				// Some error detected

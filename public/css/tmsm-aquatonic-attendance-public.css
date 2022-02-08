@@ -188,12 +188,12 @@ Due to the split circle of progress-left and progress right, we must use the ani
 
 .tmsm-aquatonic-attendance-badge-big .count-text {
   display: block;
-  font-size: 180px;
+  font-size: 160px;
   line-height: 150px;
   margin-top: 80px; }
 .tmsm-aquatonic-attendance-badge-big .count-number {
   display: block;
-  font-size: 601px;
+  font-size: 450px;
   line-height: 420px; }
 .tmsm-aquatonic-attendance-badge-big .progress {
   width: 300px;
